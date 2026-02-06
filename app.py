@@ -20,6 +20,13 @@ cards_data = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
     {"filename": "pen.jpg",   "answer": "ぺん"},
+    {"filename": "dog.jpg",    "answer": "いぬ"},    # 追加！
+    {"filename": "book.jpg",   "answer": "ほん"},    # 追加！
+    {"filename": "car.jpg",    "answer": "くるま"},  # 追加！
+    {"filename": "flower.jpg", "answer": "はな"},    # 追加！
+    {"filename": "fish.jpg",   "answer": "さかな"},  # 追加！
+    {"filename": "bird.jpg",   "answer": "とり"},    # 追加！
+    {"filename": "shoe.jpg",   "answer": "くつ"},    # 追加！
 ]
 
 # 2. アプリの状態管理
