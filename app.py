@@ -28,9 +28,9 @@ st.markdown("""
 # 1. データの準備（画像ファイル名を確認してね！）
 # GitHubにアップするときは、画像ファイルも一緒に入れます
 cards_data = [
-    {"filename": "/apple.jpg", "answer": "りんご"},
-    {"filename": "/cat.jpg",   "answer": "ねこ"},
-    {"filename": "/pen.jpg",   "answer": "ぺん"},
+    {"filename": "apple.jpg", "answer": "りんご"},
+    {"filename": "cat.jpg",   "answer": "ねこ"},
+    {"filename": "pen.jpg",   "answer": "ぺん"},
 ]
 
 # 2. アプリの状態を管理する（Streamlit特有の書き方）
