@@ -8,9 +8,14 @@ st.set_page_config(layout="centered", page_title="ことばの訓練")
 # 2. デザインの調整 (CSS)
 st.markdown("""
     <style>
-    /* アプリ全体を強制的に白くする */
+ /* アプリ全体を強制的に白くする */
     .stApp {
         background-color: #FFFFFF !important;
+    }
+    
+    /* 基本の文字色を黒に */
+    h1, h2, h3, h4, h5, h6, p, span, div, label {
+        color: #000000 !important;
     }
     .stButton button {
         width: 100%;
@@ -32,6 +37,23 @@ st.markdown("""
         font-weight: bold;
         color: #000000; /* ★ここを黒に変更しました */
         margin: 20px 0;
+    }
+    /* ★ここが今回の修正ポイント（ボタンの色を徹底固定） */
+    .stButton > button { 
+        width: 100%; 
+        height: 60px; 
+        font-size: 18px; 
+        font-weight: bold; 
+        background-color: #FFFFFF !important; /* 背景は真っ白 */
+        color: #000000 !important;            /* 文字は真っ黒 */
+        border: 2px solid #CCCCCC !important; /* グレーの枠線をつける */
+    }
+    
+    /* ボタンに触れた時やクリックした時も黒くならないようにする */
+    .stButton > button:hover, .stButton > button:active, .stButton > button:focus {
+        background-color: #F0F0F0 !important; /* 薄いグレー */
+        color: #000000 !important;            /* 文字は黒のまま */
+        border-color: #AAAAAA !important;
     }
     /* 画像を中央に固定する設定 */
     [data-testid="stImage"] img {
