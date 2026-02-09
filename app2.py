@@ -101,4 +101,53 @@ if st.session_state.mode == 'menu':
 # ■ ゲーム画面
 elif st.session_state.mode == 'game':
     with st.sidebar:
-        if st.button
+        if st.button("← メニューに戻る"):
+            st.session_state.mode = 'menu'
+            st.rerun()
+        if st.button("もう一度シャッフル"):
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
+
+    idx = st.session_state.current_index
+    cards = st.session_state.card_list
+
+    # 終了判定
+    if idx >= len(cards):
+        st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
+        if st.button("メニューに戻る"):
+            st.session_state.mode = 'menu'
+            st.rerun()
+    else:
+        target = cards[idx]
+        st.markdown(f"<p style='text-align: center;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
+
+        # 画像の表示
+        if not st.session_state.show_answer:
+            # カラムを使って中央に配置
+            c1, c2, c3 = st.columns([1, 2, 1])
+            with c2:
+                if os.path.exists(target['filename']):
+                    st.image(target['filename'], use_container_width=True)
+                else:
+                    st.error(f"画像が見つかりません: {target['filename']}")
+            
+            # 答えを見るボタン
+            st.write("")
+            b1, b2, b3 = st.columns([1, 2, 1])
+            with b2:
+                if st.button("答えを見る"):
+                    st.session_state.show_answer = True
+                    st.rerun()
+
+        # 正解の表示
+        else:
+            st.markdown(f"<div class='answer-text'>{target['answer']}</div>", unsafe_allow_html=True)
+            
+            n1, n2, n3 = st.columns([1, 2, 1])
+            with n2:
+                if st.button("次の問題へ", type="primary"):
+                    st.session_state.current_index += 1
+                    st.session_state.show_answer = False
+                    st.rerun()
