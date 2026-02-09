@@ -5,7 +5,7 @@ import os
 # 1. ページの設定
 st.set_page_config(layout="centered", page_title="ことばの訓練")
 
-# 2. CSS設定（デザイン調整）
+# 2. デザインの調整 (CSS)
 st.markdown("""
     <style>
     /* ボタンを大きく見やすく */
@@ -15,7 +15,7 @@ st.markdown("""
         font-size: 20px;
         font-weight: bold;
     }
-    /* タイトル画面の文字 */
+    /* タイトルの文字 */
     .title-text {
         text-align: center;
         font-size: 30px;
@@ -30,7 +30,7 @@ st.markdown("""
         color: #FF4B4B;
         margin: 20px 0;
     }
-    /* 画像を確実に中央に寄せる設定 */
+    /* 画像を中央に固定する設定 */
     [data-testid="stImage"] img {
         display: block;
         margin-left: auto !important;
@@ -73,7 +73,7 @@ if 'mode' not in st.session_state:
     st.session_state.show_answer = False
 
 # ----------------------------------------
-# 5. 画面の表示
+# 5. 画面表示のロジック
 # ----------------------------------------
 
 # ■ メニュー画面
@@ -101,17 +101,4 @@ if st.session_state.mode == 'menu':
 # ■ ゲーム画面
 elif st.session_state.mode == 'game':
     with st.sidebar:
-        if st.button("← メニューに戻る"):
-            st.session_state.mode = 'menu'
-            st.rerun()
-        if st.button("もう一度シャッフル"):
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
-            st.rerun()
-
-    idx = st.session_state.current_index
-    cards = st.session_state.card_list
-
-    if idx >= len(cards):
-        st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=
+        if st.button
