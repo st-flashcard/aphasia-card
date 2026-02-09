@@ -8,8 +8,11 @@ st.set_page_config(layout="centered", page_title="ことばの訓練")
 # 2. デザインの調整 (CSS)
 st.markdown("""
     <style>
-    /* ボタンを大きく見やすく */
-    .main { background-color: #FFFFFF !important; color: #000000 !important; }
+   /* ★追加：どんな端末でも背景を白、全体の文字を黒に固定する */
+    .main {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+    }
     .stButton button {
         width: 100%;
         height: 60px;
