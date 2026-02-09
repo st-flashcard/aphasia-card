@@ -2,10 +2,10 @@ import streamlit as st
 import random
 import os
 
-# 1. ページの設定
-st.set_page_config(layout="centered") # これで最初からある程度真ん中に寄ります
+# 1. ページの設定（レイアウトを「centered」にするだけで、基本は真ん中に寄ります）
+st.set_page_config(layout="centered")
 
-# 2. デザイン調整（ボタンの見た目だけ整えます。配置はいじりません）
+# 2. デザイン調整（ボタンの見た目だけ）
 st.markdown("""
     <style>
     .stButton button {
@@ -13,8 +13,7 @@ st.markdown("""
         font-size: 20px;
         font-weight: bold;
         height: 60px;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -56,8 +55,7 @@ if 'mode' not in st.session_state:
 if st.session_state.mode == 'menu':
     st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>訓練メニューを選んでください</h2>", unsafe_allow_html=True)
     
-    # 画面を「左・中・右」に分けます（比率は 1 : 2 : 1）
-    # 真ん中（col2）にだけボタンを置きます
+    # 画面を「1 : 2 : 1」に分割（真ん中の「2」の場所にボタンを置く作戦）
     col1, col2, col3 = st.columns([1, 2, 1])
     
     with col2:
@@ -80,7 +78,7 @@ if st.session_state.mode == 'menu':
 # ■ パターン2：ゲーム画面
 elif st.session_state.mode == 'game':
     
-    # サイドバー（メニュー）
+    # サイドバー（メニューに戻るボタン）
     with st.sidebar:
         st.write("メニュー")
         if st.button("← メニューに戻る"):
@@ -92,7 +90,6 @@ elif st.session_state.mode == 'game':
             st.session_state.show_answer = False
             st.rerun()
 
-    # データチェック
     if not st.session_state.card_list:
         st.error("エラー：データがありません")
         if st.button("戻る"):
@@ -111,13 +108,39 @@ elif st.session_state.mode == 'game':
                     st.session_state.mode = 'menu'
                     st.rerun()
 
-        # 問題表示画面
+        # 問題画面
         else:
             target = cards[idx]
 
-            # 1. 第○問（文字を真ん中に）
+            # 1. ヘッダー（第○問）
             st.markdown(f"<h3 style='text-align: center;'>第 {idx + 1} 問</h3>", unsafe_allow_html=True)
             st.write("") # 少し隙間
 
-            # 2. 画像とボタン（ここも「左・中・右」作戦！）
-            col1, col2, col3 = st.columns([1, 4, 1])
+            # 2. メインエリア（ここも 1:2:1 で真ん中に配置）
+            col1, col2, col3 = st.columns([1, 2, 1])
+            
+            with col2:
+                # A. 答えを見る前
+                if not st.session_state.show_answer:
+                    if os.path.exists(target['filename']):
+                        # ★ここ修正：サイズを数値で指定（これが一番安全です）
+                        st.image(target['filename'], width=300)
+                    else:
+                        st.error(f"画像なし: {target['filename']}")
+                    
+                    # 隙間
+                    st.write("")
+                    
+                    if st.button("答えを見る"):
+                        st.session_state.show_answer = True
+                        st.rerun()
+
+                # B. 答えを見た後
+                else:
+                    # 正解の文字
+                    st.markdown(f"<h1 style='text-align: center; font-size: 60px; margin: 20px 0;'>{target['answer']}</h1>", unsafe_allow_html=True)
+                    
+                    if st.button("次の問題へ", type="primary"):
+                        st.session_state.current_index += 1
+                        st.session_state.show_answer = False
+                        st.rerun()
