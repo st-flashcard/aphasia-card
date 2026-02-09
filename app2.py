@@ -5,34 +5,31 @@ import os
 # ページの設定
 st.set_page_config(layout="centered")
 
-# CSS設定（デザイン調整）
+# CSS設定
 st.markdown("""
     <style>
-    /* ボタンを大きく見やすく */
+    /* ボタンのデザイン */
     .stButton button {
         width: 100%;
         height: 60px;
         font-size: 20px;
         font-weight: bold;
     }
-    /* タイトル画面の文字 */
+    /* タイトルのデザイン */
     .title-text {
         text-align: center;
         font-size: 30px;
         font-weight: bold;
         margin-bottom: 20px;
     }
-    
-    /* ★修正ポイント：画像表示エリア自体を中央揃えにする */
-    [data-testid="stImage"] {
-        display: flex;
-        justify-content: center;
-    }
-    /* 画像そのものにも中央寄せを適用 */
-    [data-testid="stImage"] img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+    /* 正解文字のスタイル */
+    .answer-text {
+        text-align: center;
+        font-size: 80px;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        color: #FF4B4B; /* 少し色をつけて目立たせました */
     }
     </style>
 """, unsafe_allow_html=True)
@@ -74,7 +71,6 @@ if 'mode' not in st.session_state:
 # 3. 画面の表示
 # ----------------------------------------
 
-# ■ パターン1：メニュー画面
 if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
@@ -96,7 +92,6 @@ if st.session_state.mode == 'menu':
             st.session_state.mode = 'game'
             st.rerun()
 
-# ■ パターン2：ゲーム画面
 elif st.session_state.mode == 'game':
     with st.sidebar:
         st.write("メニュー")
@@ -111,9 +106,6 @@ elif st.session_state.mode == 'game':
 
     if not st.session_state.card_list:
         st.error("データがありません。メニューに戻ってください。")
-        if st.button("戻る"):
-            st.session_state.mode = 'menu'
-            st.rerun()
     else:
         idx = st.session_state.current_index
         cards = st.session_state.card_list
@@ -127,37 +119,23 @@ elif st.session_state.mode == 'game':
             target = cards[idx]
             st.markdown(f"<div style='text-align: center; font-size: 18px; margin-bottom: 10px;'>第 {idx + 1} 問</div>", unsafe_allow_html=True)
 
-            # A. 画像を表示
+            # --- ここから画像表示の修正 ---
             if not st.session_state.show_answer:
-                # ★中央に寄せるために、あえてカラムを使わず全体に表示するか、
-                # もしくは use_container_width を使うのがモダンな方法です。
-                if os.path.exists(target['filename']):
-                    # widthを指定しつつ、CSSの margin: auto を効かせます
-                    st.image(target['filename'], width=300) 
-                else:
-                    st.error(f"画像が見つかりません: {target['filename']}")
+                # 3つのカラムを作り、真ん中（col2）を広くします。
+                # [1, 2, 1] の比率で、真ん中の 2 が画像エリアになります。
+                col1, col2, col3 = st.columns([0.5, 2, 0.5]) 
                 
-                # 答えボタン（ここはボタンの幅を整えるためにカラムを使用）
+                with col2:
+                    if os.path.exists(target['filename']):
+                        # use_container_width=True にすることで、
+                        # 「真ん中のカラムの横幅いっぱい」に画像が表示されます。
+                        st.image(target['filename'], use_container_width=True)
+                    else:
+                        st.error(f"画像が見つかりません: {target['filename']}")
+                
+                # 答えを見るボタン
                 st.write("") 
-                c1, c2, c3 = st.columns([1, 2, 1]) 
-                with c2:
+                bc1, bc2, bc3 = st.columns([1, 2, 1]) 
+                with bc2:
                     if st.button("答えを見る"):
-                        st.session_state.show_answer = True
-                        st.rerun()
-
-            # B. 正解を表示
-            else:
-                st.markdown(f"""
-                <div style="text-align: center; width: 100%;">
-                    <h1 style="font-size: 80px; margin-top: 10px; margin-bottom: 20px;">
-                        {target['answer']}
-                    </h1>
-                </div>
-                """, unsafe_allow_html=True)
-
-                c1, c2, c3 = st.columns([1, 2, 1])
-                with c2:
-                    if st.button("次の問題へ", type="primary"):
-                        st.session_state.current_index += 1
-                        st.session_state.show_answer = False
-                        st.rerun()
+                        st.session_state.
