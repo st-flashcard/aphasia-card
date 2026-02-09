@@ -5,29 +5,26 @@ import os
 # ページの設定
 st.set_page_config(layout="centered")
 
-# --- CSS設定（強力な真ん中寄せ & 余白調整）---
+# --- CSS設定（安全なデザインに書き直しました）---
 st.markdown("""
     <style>
-    /* 1. 画面上部の余白をガッツリ空ける（これで文字切れを防ぐ） */
+    /* 1. 画面上部の余白（文字切れ防止） */
     .block-container {
-        padding-top: 100px !important; /* 上に100pxの隙間を作る */
-        padding-bottom: 50px !important;
-        max-width: 500px !important;   /* スマホっぽく幅を狭く固定 */
+        padding-top: 3rem !important;
+        padding-bottom: 5rem !important;
     }
 
-    /* 2. 画像を強制的に真ん中へ */
+    /* 2. 画像を真ん中に配置 */
     div[data-testid="stImage"] {
         display: flex;
-        justify_content: center !important;
-        align-items: center !important;
-        margin: 0 auto !important;
+        justify_content: center;
+        align-items: center;
     }
 
-    /* 3. ボタンを強制的に真ん中へ */
+    /* 3. ボタンを真ん中に配置 */
     .stButton {
         display: flex;
-        justify_content: center !important;
-        margin: 0 auto !important;
+        justify_content: center;
     }
 
     /* 4. ボタン自体のデザイン */
@@ -38,13 +35,7 @@ st.markdown("""
         font-size: 20px;
         font-weight: bold;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    /* 5. 文字をすべて真ん中揃えに */
-    h1, h2, h3, p, div {
-        text-align: center !important;
+        margin-bottom: 15px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -90,7 +81,8 @@ if 'mode' not in st.session_state:
 
 # ■ パターン1：メニュー画面
 if st.session_state.mode == 'menu':
-    st.markdown("<h2 style='margin-bottom: 30px;'>訓練メニューを選んでください</h2>", unsafe_allow_html=True)
+    # タイトルをHTMLで書いて真ん中寄せ
+    st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>訓練メニューを選んでください</h2>", unsafe_allow_html=True)
     
     if st.button("🍎 基本の単語"):
         st.session_state.card_list = course_basic.copy()
@@ -113,7 +105,7 @@ elif st.session_state.mode == 'game':
     
     # サイドバー
     with st.sidebar:
-        st.markdown("<h3 style='text-align: center;'>メニュー</h3>", unsafe_allow_html=True)
+        st.write("メニュー")
         if st.button("← メニューに戻る"):
             st.session_state.mode = 'menu'
             st.rerun()
@@ -134,7 +126,7 @@ elif st.session_state.mode == 'game':
 
         # 終了判定
         if idx >= len(cards):
-            st.markdown("<h2>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
             st.write("")
             if st.button("メニューに戻る"):
                 st.session_state.mode = 'menu'
@@ -144,19 +136,23 @@ elif st.session_state.mode == 'game':
         else:
             target = cards[idx]
 
-            # ヘッダー（第○問）
-            st.markdown(f"<h3 style='margin-bottom: 20px;'>第 {idx + 1} 問</h3>", unsafe_allow_html=True)
+            # 文字切れ防止のためのクッション（透明な箱）を置きます
+            st.write("")
+            st.write("")
+
+            # 第○問（HTMLで真ん中寄せ）
+            st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>第 {idx + 1} 問</h3>", unsafe_allow_html=True)
 
             # A. 画像を表示
             if not st.session_state.show_answer:
                 if os.path.exists(target['filename']):
-                    # CSSで中央寄せしているので、普通に書くだけでOK
+                    # 幅を300pxにして表示
                     st.image(target['filename'], width=300)
                 else:
                     st.error(f"画像なし: {target['filename']}")
                 
                 # 少し隙間
-                st.markdown("<br>", unsafe_allow_html=True)
+                st.write("") 
                 
                 if st.button("答えを見る"):
                     st.session_state.show_answer = True
@@ -164,6 +160,7 @@ elif st.session_state.mode == 'game':
 
             # B. 正解を表示
             else:
+                # 正解文字（HTMLで真ん中寄せ）
                 st.markdown(f"""
                 <div style="text-align: center; width: 100%;">
                     <h1 style="font-size: 80px; margin-top: 20px; margin-bottom: 30px;">
