@@ -46,8 +46,13 @@ course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
     {"filename": "pen.jpg",   "answer": "ぺん"},
-    {"filename": "watch.jpg", "answer": "とけい"},
-    {"filename": "book.jpg",  "answer": "ほん"},
+    {"filename": "dog.jpg",    "answer": "いぬ"},   
+    {"filename": "book.jpg",   "answer": "ほん"},    
+    {"filename": "car.jpg",    "answer": "くるま"},  
+    {"filename": "flower.jpg", "answer": "はな"},    
+    {"filename": "fish.jpg",   "answer": "さかな"},  
+    {"filename": "bird.jpg",   "answer": "とり"},    
+    {"filename": "shoe.jpg",   "answer": "くつ"},    
 ]
 
 course_animals = [
