@@ -62,7 +62,18 @@ course_animals = [
     {"filename": "penguin.jpg",  "answer": "ぺんぎん"},
     {"filename": "tiger.jpg",    "answer": "とら"},
 ]
-
+course_animals2 = [
+    {"filename": "dog.jpg",      "answer": "いぬ"},
+    {"filename": "cat.jpg",      "answer": "ねこ"},
+    {"filename": "panda.jpg",    "answer": "ぱんだ"},
+    {"filename": "lion.jpg",     "answer": "らいおん"},
+    {"filename": "giraffe.jpg",  "answer": "きりん"},
+    {"filename": "elephant.jpg", "answer": "ぞう"},
+    {"filename": "koala.jpg",    "answer": "こあら"},
+    {"filename": "gorilla.jpg",  "answer": "ごりら"},
+    {"filename": "penguin.jpg",  "answer": "ぺんぎん"},
+    {"filename": "tiger.jpg",    "answer": "とら"},
+]
 # ----------------------------------------
 # 4. アプリの状態管理
 # ----------------------------------------
@@ -97,7 +108,14 @@ if st.session_state.mode == 'menu':
             st.session_state.show_answer = False
             st.session_state.mode = 'game'
             st.rerun()
-
+with col3:
+        if st.button("🐶 動物カテゴリー2"):
+            st.session_state.card_list = course_animals.copy()
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.session_state.mode = 'game'
+            st.rerun()
 # ■ ゲーム画面
 elif st.session_state.mode == 'game':
     with st.sidebar:
