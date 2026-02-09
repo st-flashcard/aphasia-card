@@ -74,4 +74,20 @@ if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
+    
     with col1:
+        if st.button("🍎 基本の単語"):
+            st.session_state.card_list = course_basic.copy()
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.session_state.mode = 'game'
+            st.rerun()
+
+    with col2:
+        if st.button("🐶 動物カテゴリー"):
+            st.session_state.card_list = course_animals.copy()
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.session_state
