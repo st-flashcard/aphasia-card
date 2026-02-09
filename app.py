@@ -65,11 +65,12 @@ else:
     
     # A. 画像を表示するとき
     if not st.session_state.show_answer:
-        # 3つの列を作って、真ん中（col2）に画像を置く
-        col1, col2, col3 = st.columns([1, 10, 1])
+        # ★修正：画像のサイズを程よくするために列の比率を調整 [1, 2, 1]
+        col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             if os.path.exists(target['filename']):
-                st.image(target['filename'], use_container_width=True)
+                # ★修正：use_container_width=True をやめて、width=350 に固定！
+                st.image(target['filename'], width=350)
             else:
                 st.error("画像なし")
         
@@ -84,7 +85,7 @@ else:
 
     # B. 正解を表示するとき
     else:
-        # ★ここを修正：一番シンプルな「強制中央揃え」にしました
+        # 正解をど真ん中に表示
         st.markdown(f"""
         <div style="text-align: center; width: 100%;">
             <h1 style="font-size: 80px; margin-top: 50px; margin-bottom: 50px;">
