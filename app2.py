@@ -88,11 +88,13 @@ if 'mode' not in st.session_state:
 # ----------------------------------------
 
 # ■ メニュー画面
+# ■ メニュー画面
 if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
     # ★ 2個から3個に変更し、col3を追加します
     col1, col2, col3 = st.columns(3)
+    
     with col1:
         if st.button("🍎 基本の単語"):
             st.session_state.card_list = course_basic.copy()
@@ -101,6 +103,7 @@ if st.session_state.mode == 'menu':
             st.session_state.show_answer = False
             st.session_state.mode = 'game'
             st.rerun()
+
     with col2:
         if st.button("🐶 動物カテゴリー"):
             st.session_state.card_list = course_animals.copy()
@@ -109,9 +112,12 @@ if st.session_state.mode == 'menu':
             st.session_state.show_answer = False
             st.session_state.mode = 'game'
             st.rerun()
-with col3:
-        if st.button("🐶 動物カテゴリー2"):
-            st.session_state.card_list = course_animals.copy()
+
+    # ★ col3の設定を追加
+    with col3:
+        if st.button("🦁 動物カテゴリー2"):
+            # ここは course_animals2 を使うように修正しました
+            st.session_state.card_list = course_animals2.copy()
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
             st.session_state.show_answer = False
