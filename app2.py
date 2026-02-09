@@ -22,16 +22,23 @@ st.markdown("""
         font-weight: bold;
         margin-bottom: 20px;
     }
-    /* ★追加：画像自体を中央に寄せる設定 */
+    
+    /* ★修正ポイント：画像表示エリア自体を中央揃えにする */
     [data-testid="stImage"] {
         display: flex;
         justify-content: center;
+    }
+    /* 画像そのものにも中央寄せを適用 */
+    [data-testid="stImage"] img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # ----------------------------------------
-# 1. データの準備（変更なし）
+# 1. データの準備
 # ----------------------------------------
 course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
@@ -55,7 +62,7 @@ course_animals = [
 ]
 
 # ----------------------------------------
-# 2. アプリの状態管理（変更なし）
+# 2. アプリの状態管理
 # ----------------------------------------
 if 'mode' not in st.session_state:
     st.session_state.mode = 'menu'
@@ -72,7 +79,6 @@ if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
-    
     with col1:
         if st.button("🍎 基本の単語"):
             st.session_state.card_list = course_basic.copy()
@@ -81,7 +87,6 @@ if st.session_state.mode == 'menu':
             st.session_state.show_answer = False
             st.session_state.mode = 'game'
             st.rerun()
-
     with col2:
         if st.button("🐶 動物カテゴリー"):
             st.session_state.card_list = course_animals.copy()
@@ -93,7 +98,6 @@ if st.session_state.mode == 'menu':
 
 # ■ パターン2：ゲーム画面
 elif st.session_state.mode == 'game':
-    
     with st.sidebar:
         st.write("メニュー")
         if st.button("← メニューに戻る"):
@@ -119,21 +123,21 @@ elif st.session_state.mode == 'game':
             if st.button("メニューに戻る"):
                 st.session_state.mode = 'menu'
                 st.rerun()
-
         else:
             target = cards[idx]
             st.markdown(f"<div style='text-align: center; font-size: 18px; margin-bottom: 10px;'>第 {idx + 1} 問</div>", unsafe_allow_html=True)
 
             # A. 画像を表示
             if not st.session_state.show_answer:
-                # 画像の表示（CSSにより、この col2 の中で中央寄せになります）
-                col1, col2, col3 = st.columns([1, 2, 1])
-                with col2:
-                    if os.path.exists(target['filename']):
-                        st.image(target['filename'], width=280) 
-                    else:
-                        st.error(f"画像が見つかりません: {target['filename']}")
+                # ★中央に寄せるために、あえてカラムを使わず全体に表示するか、
+                # もしくは use_container_width を使うのがモダンな方法です。
+                if os.path.exists(target['filename']):
+                    # widthを指定しつつ、CSSの margin: auto を効かせます
+                    st.image(target['filename'], width=300) 
+                else:
+                    st.error(f"画像が見つかりません: {target['filename']}")
                 
+                # 答えボタン（ここはボタンの幅を整えるためにカラムを使用）
                 st.write("") 
                 c1, c2, c3 = st.columns([1, 2, 1]) 
                 with c2:
