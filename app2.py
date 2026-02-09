@@ -5,32 +5,37 @@ import os
 # 1. ページの設定
 st.set_page_config(layout="centered")
 
-# 2. デザイン調整（高さを抑えるための最小限のCSS）
+# 2. デザイン調整（高さを最小限にするためのCSS）
 st.markdown("""
     <style>
-    /* 画面上部の余白をギリギリまで削る */
+    /* 1. 画面上部の余白を完全にゼロにする */
     .block-container {
-        padding-top: 1rem !important;
+        padding-top: 0.5rem !important;
         padding-bottom: 0rem !important;
     }
-    /* ボタンのサイズを少しコンパクトに */
+    /* 2. 画像の上下の隙間を消す */
+    [data-testid="stImage"] {
+        margin-top: -10px !important;
+        margin-bottom: -10px !important;
+    }
+    /* 3. ボタンを少し小さく、余白も詰める */
     .stButton button {
         width: 100%;
-        max-width: 250px;
-        height: 50px;
-        font-size: 18px;
-        font-weight: bold;
-    }
-    /* テキストの余白を詰める */
-    p, h1, h2, h3 {
+        max-width: 200px;
+        height: 45px;
+        font-size: 16px;
         margin-top: 0px !important;
-        margin-bottom: 5px !important;
+    }
+    /* 4. 文字サイズを小さくして一行に収める */
+    h3, h2, h1, p {
+        margin: 0px !important;
+        padding: 0px !important;
         text-align: center;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 3. データの準備
+# 3. データの準備（中身はそのまま）
 course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
@@ -52,7 +57,7 @@ course_animals = [
     {"filename": "tiger.jpg",    "answer": "とら"},
 ]
 
-# 4. アプリの状態管理
+# 4. 状態管理
 if 'mode' not in st.session_state:
     st.session_state.mode = 'menu'
     st.session_state.card_list = []
@@ -62,18 +67,15 @@ if 'mode' not in st.session_state:
 # --- 画面表示 ---
 
 if st.session_state.mode == 'menu':
-    st.write("### 訓練メニュー")
-    
-    # メニュー画面もコンパクトに配置
-    if st.button("🍎 基本の単語コース"):
+    st.markdown("### 訓練メニュー")
+    if st.button("🍎 基本"):
         st.session_state.card_list = course_basic.copy()
         random.shuffle(st.session_state.card_list)
         st.session_state.current_index = 0
         st.session_state.show_answer = False
         st.session_state.mode = 'game'
         st.rerun()
-
-    if st.button("🐶 動物カテゴリーコース"):
+    if st.button("🐶 動物"):
         st.session_state.card_list = course_animals.copy()
         random.shuffle(st.session_state.card_list)
         st.session_state.current_index = 0
@@ -82,9 +84,9 @@ if st.session_state.mode == 'menu':
         st.rerun()
 
 elif st.session_state.mode == 'game':
-    
+    # サイドバーは閉じている前提で進めます
     with st.sidebar:
-        if st.button("← メニューに戻る"):
+        if st.button("← 戻る"):
             st.session_state.mode = 'menu'
             st.rerun()
 
@@ -92,39 +94,34 @@ elif st.session_state.mode == 'game':
     cards = st.session_state.card_list
 
     if idx >= len(cards):
-        st.write("## 🎉 おつかれさまでした！")
-        if st.button("メニューに戻る"):
+        st.write("## 🎉 お疲れ様！")
+        if st.button("メニューへ"):
             st.session_state.mode = 'menu'
             st.rerun()
     else:
         target = cards[idx]
-        st.write(f"第 {idx + 1} 問")
-
-        # --- ここがポイント：スクロールを防ぐ配置 ---
         
-        # 1. 答えを見る前
+        # 1. 第○問（小さく表示）
+        st.markdown(f"**第 {idx + 1} 問**")
+
+        # 2. 画像（思い切ってさらに小さく width=180）
+        if os.path.exists(target['filename']):
+            # ★ここをさらに小さくしました！
+            st.image(target['filename'], width=180)
+        
+        # 3. ボタンと正解表示
         if not st.session_state.show_answer:
-            if os.path.exists(target['filename']):
-                # ★画像を幅250pxに制限して、高さを抑えます
-                st.image(target['filename'], width=250)
-            else:
-                st.error("画像なし")
-            
-            # 中央寄せにするために空の列で挟む
-            c1, c2, c3 = st.columns([1, 2, 1])
-            with c2:
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
                 if st.button("答えを見る"):
                     st.session_state.show_answer = True
                     st.rerun()
-
-        # 2. 答えを見た後
         else:
-            # 正解の文字を少し控えめなサイズ（h2）に
-            st.write(f"## {target['answer']}")
-            
-            c1, c2, c3 = st.columns([1, 2, 1])
-            with c2:
-                if st.button("次の問題へ"):
+            # 答えの文字サイズを調整（大きすぎないように）
+            st.markdown(f"## {target['answer']}")
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                if st.button("次へ"):
                     st.session_state.current_index += 1
                     st.session_state.show_answer = False
                     st.rerun()
