@@ -2,10 +2,35 @@ import streamlit as st
 import random
 import os
 
-# 1. ページの設定（これだけで基本は十分です）
+# 1. ページの設定
 st.set_page_config(layout="centered")
 
-# 2. データの準備（動物リストも入っています）
+# 2. デザイン調整（高さを抑えるための最小限のCSS）
+st.markdown("""
+    <style>
+    /* 画面上部の余白をギリギリまで削る */
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 0rem !important;
+    }
+    /* ボタンのサイズを少しコンパクトに */
+    .stButton button {
+        width: 100%;
+        max-width: 250px;
+        height: 50px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    /* テキストの余白を詰める */
+    p, h1, h2, h3 {
+        margin-top: 0px !important;
+        margin-bottom: 5px !important;
+        text-align: center;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 3. データの準備
 course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
@@ -27,7 +52,7 @@ course_animals = [
     {"filename": "tiger.jpg",    "answer": "とら"},
 ]
 
-# 3. アプリの状態管理
+# 4. アプリの状態管理
 if 'mode' not in st.session_state:
     st.session_state.mode = 'menu'
     st.session_state.card_list = []
@@ -36,10 +61,10 @@ if 'mode' not in st.session_state:
 
 # --- 画面表示 ---
 
-# ■ パターン1：メニュー画面
 if st.session_state.mode == 'menu':
-    st.write("### 訓練メニューを選んでください") # タイトルを表示
+    st.write("### 訓練メニュー")
     
+    # メニュー画面もコンパクトに配置
     if st.button("🍎 基本の単語コース"):
         st.session_state.card_list = course_basic.copy()
         random.shuffle(st.session_state.card_list)
@@ -56,10 +81,8 @@ if st.session_state.mode == 'menu':
         st.session_state.mode = 'game'
         st.rerun()
 
-# ■ パターン2：ゲーム画面（訓練中）
 elif st.session_state.mode == 'game':
     
-    # 左側のメニューに戻るボタン
     with st.sidebar:
         if st.button("← メニューに戻る"):
             st.session_state.mode = 'menu'
@@ -68,7 +91,6 @@ elif st.session_state.mode == 'game':
     idx = st.session_state.current_index
     cards = st.session_state.card_list
 
-    # 終了判定
     if idx >= len(cards):
         st.write("## 🎉 おつかれさまでした！")
         if st.button("メニューに戻る"):
@@ -76,26 +98,33 @@ elif st.session_state.mode == 'game':
             st.rerun()
     else:
         target = cards[idx]
-        st.write(f"第 {idx + 1} 問") # 何問目か表示
+        st.write(f"第 {idx + 1} 問")
 
-        # 答えを見る前
+        # --- ここがポイント：スクロールを防ぐ配置 ---
+        
+        # 1. 答えを見る前
         if not st.session_state.show_answer:
-            # 画像があるかチェック
             if os.path.exists(target['filename']):
-                st.image(target['filename'], use_container_width=True)
+                # ★画像を幅250pxに制限して、高さを抑えます
+                st.image(target['filename'], width=250)
             else:
-                st.error(f"画像ファイルが見つかりません: {target['filename']}")
+                st.error("画像なし")
             
-            # 答えボタン
-            if st.button("答えを見る"):
-                st.session_state.show_answer = True
-                st.rerun()
+            # 中央寄せにするために空の列で挟む
+            c1, c2, c3 = st.columns([1, 2, 1])
+            with c2:
+                if st.button("答えを見る"):
+                    st.session_state.show_answer = True
+                    st.rerun()
 
-        # 答えを見た後
+        # 2. 答えを見た後
         else:
-            st.write(f"# {target['answer']}") # 大きく答えを表示
+            # 正解の文字を少し控えめなサイズ（h2）に
+            st.write(f"## {target['answer']}")
             
-            if st.button("次の問題へ"):
-                st.session_state.current_index += 1
-                st.session_state.show_answer = False
-                st.rerun()
+            c1, c2, c3 = st.columns([1, 2, 1])
+            with c2:
+                if st.button("次の問題へ"):
+                    st.session_state.current_index += 1
+                    st.session_state.show_answer = False
+                    st.rerun()
