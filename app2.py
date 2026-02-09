@@ -8,11 +8,16 @@ st.set_page_config(layout="centered", page_title="ことばの訓練")
 # 2. デザインの調整 (CSS)
 st.markdown("""
     <style>
-    /* ボタンを大きく見やすく */
+    /* ボタンを中央に寄せて、見やすくする */
+    .stButton {
+        display: flex;
+        justify-content: center;
+    }
     .stButton button {
-        width: 100%;
+        width: 100%; /* カラム幅いっぱいに広げる */
+        max-width: 300px; /* 広がりすぎないように制限 */
         height: 60px;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: bold;
     }
     /* タイトルの文字 */
@@ -22,12 +27,12 @@ st.markdown("""
         font-weight: bold;
         margin-bottom: 20px;
     }
-    /* 正解文字のデザイン（色を黒に修正） */
+    /* 正解文字のデザイン（色は黒） */
     .answer-text {
         text-align: center;
         font-size: 80px;
         font-weight: bold;
-        color: #000000; /* ★ここを黒に変更しました */
+        color: #000000;
         margin: 20px 0;
     }
     /* 画像を中央に固定する設定 */
@@ -35,6 +40,8 @@ st.markdown("""
         display: block;
         margin-left: auto !important;
         margin-right: auto !important;
+        border: 1px solid #ddd; /* 輪郭を少し見やすく */
+        border-radius: 10px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -46,13 +53,8 @@ course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
     {"filename": "pen.jpg",   "answer": "ぺん"},
-    {"filename": "dog.jpg",    "answer": "いぬ"},   
-    {"filename": "book.jpg",   "answer": "ほん"},    
-    {"filename": "car.jpg",    "answer": "くるま"},  
-    {"filename": "flower.jpg", "answer": "はな"},    
-    {"filename": "fish.jpg",   "answer": "さかな"},  
-    {"filename": "bird.jpg",   "answer": "とり"},    
-    {"filename": "shoe.jpg",   "answer": "くつ"},    
+    {"filename": "watch.jpg", "answer": "とけい"},
+    {"filename": "book.jpg",  "answer": "ほん"},
 ]
 
 course_animals = [
@@ -118,9 +120,9 @@ elif st.session_state.mode == 'game':
     idx = st.session_state.current_index
     cards = st.session_state.card_list
 
-    # 終了判定
     if idx >= len(cards):
         st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
+        # 終了画面のボタンも中央寄せ
         if st.button("メニューに戻る"):
             st.session_state.mode = 'menu'
             st.rerun()
@@ -130,17 +132,17 @@ elif st.session_state.mode == 'game':
 
         # 画像の表示
         if not st.session_state.show_answer:
-            c1, c2, c3 = st.columns([1, 2, 1])
+            # 枠を中央に配置
+            c1, c2, c3 = st.columns([0.5, 2, 0.5])
             with c2:
                 if os.path.exists(target['filename']):
                     st.image(target['filename'], use_container_width=True)
                 else:
                     st.error(f"画像が見つかりません: {target['filename']}")
             
-            # 答えを見るボタン
+            # 答えを見るボタン (こちらも中央カラムに配置)
             st.write("")
-            b1, b2, b3 = st.columns([1, 2, 1])
-            with b2:
+            with c2:
                 if st.button("答えを見る"):
                     st.session_state.show_answer = True
                     st.rerun()
@@ -149,8 +151,9 @@ elif st.session_state.mode == 'game':
         else:
             st.markdown(f"<div class='answer-text'>{target['answer']}</div>", unsafe_allow_html=True)
             
-            n1, n2, n3 = st.columns([1, 2, 1])
-            with n2:
+            # 次の問題へボタン (中央に配置)
+            _, n_col, _ = st.columns([0.5, 2, 0.5])
+            with n_col:
                 if st.button("次の問題へ", type="primary"):
                     st.session_state.current_index += 1
                     st.session_state.show_answer = False
