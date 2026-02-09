@@ -17,6 +17,13 @@ st.markdown("""
     h1, h2, h3, h4, h5, h6, p, span, div, label {
         color: #000000 !important;
     }
+    /* ★ここが修正点：画像とボタンの距離を縮める設定 */
+    [data-testid="stImage"] {
+        margin-bottom: -20px !important; /* 画像の下の隙間を消す */
+    }
+    .stButton {
+        margin-top: -10px !important;    /* ボタンの上の隙間を消す */
+    }
     .stButton button {
         width: 100%;
         height: 60px;
