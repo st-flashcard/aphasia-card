@@ -75,30 +75,3 @@ if st.session_state.mode == 'menu':
     
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🍎 基本の単語"):
-            st.session_state.card_list = course_basic.copy()
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
-            st.session_state.mode = 'game'
-            st.rerun()
-
-    with col2:
-        if st.button("🐶 動物カテゴリー"):
-            st.session_state.card_list = course_animals.copy()
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
-            st.session_state.mode = 'game'
-            st.rerun()
-
-# ■ パターン2：ゲーム画面
-elif st.session_state.mode == 'game':
-    
-    # ★改善点：メニューに戻るボタンを「サイドバー（左）」に移動して画面を広くする
-    with st.sidebar:
-        st.write("メニュー")
-        if st.button("← メニューに戻る"):
-            st.session_state.mode = 'menu'
-            st.rerun()
-        if st.button
