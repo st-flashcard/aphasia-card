@@ -2,40 +2,45 @@ import streamlit as st
 import random
 import os
 
-# ページの設定
-st.set_page_config(layout="centered")
+# 1. ページの設定
+st.set_page_config(layout="centered", page_title="ことばの訓練")
 
-# CSS設定
+# 2. CSS設定（デザイン調整）
 st.markdown("""
     <style>
-    /* ボタンのデザイン */
+    /* ボタンを大きく見やすく */
     .stButton button {
         width: 100%;
         height: 60px;
         font-size: 20px;
         font-weight: bold;
     }
-    /* タイトルのデザイン */
+    /* タイトル画面の文字 */
     .title-text {
         text-align: center;
         font-size: 30px;
         font-weight: bold;
         margin-bottom: 20px;
     }
-    /* 正解文字のスタイル */
+    /* 正解文字のデザイン */
     .answer-text {
         text-align: center;
         font-size: 80px;
         font-weight: bold;
-        margin-top: 10px;
-        margin-bottom: 20px;
-        color: #FF4B4B; /* 少し色をつけて目立たせました */
+        color: #FF4B4B;
+        margin: 20px 0;
+    }
+    /* 画像を確実に中央に寄せる設定 */
+    [data-testid="stImage"] img {
+        display: block;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # ----------------------------------------
-# 1. データの準備
+# 3. データの準備
 # ----------------------------------------
 course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
@@ -59,7 +64,7 @@ course_animals = [
 ]
 
 # ----------------------------------------
-# 2. アプリの状態管理
+# 4. アプリの状態管理
 # ----------------------------------------
 if 'mode' not in st.session_state:
     st.session_state.mode = 'menu'
@@ -68,9 +73,10 @@ if 'mode' not in st.session_state:
     st.session_state.show_answer = False
 
 # ----------------------------------------
-# 3. 画面の表示
+# 5. 画面の表示
 # ----------------------------------------
 
+# ■ メニュー画面
 if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
@@ -92,9 +98,9 @@ if st.session_state.mode == 'menu':
             st.session_state.mode = 'game'
             st.rerun()
 
+# ■ ゲーム画面
 elif st.session_state.mode == 'game':
     with st.sidebar:
-        st.write("メニュー")
         if st.button("← メニューに戻る"):
             st.session_state.mode = 'menu'
             st.rerun()
@@ -104,38 +110,8 @@ elif st.session_state.mode == 'game':
             st.session_state.show_answer = False
             st.rerun()
 
-    if not st.session_state.card_list:
-        st.error("データがありません。メニューに戻ってください。")
-    else:
-        idx = st.session_state.current_index
-        cards = st.session_state.card_list
+    idx = st.session_state.current_index
+    cards = st.session_state.card_list
 
-        if idx >= len(cards):
-            st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
-            if st.button("メニューに戻る"):
-                st.session_state.mode = 'menu'
-                st.rerun()
-        else:
-            target = cards[idx]
-            st.markdown(f"<div style='text-align: center; font-size: 18px; margin-bottom: 10px;'>第 {idx + 1} 問</div>", unsafe_allow_html=True)
-
-            # --- ここから画像表示の修正 ---
-            if not st.session_state.show_answer:
-                # 3つのカラムを作り、真ん中（col2）を広くします。
-                # [1, 2, 1] の比率で、真ん中の 2 が画像エリアになります。
-                col1, col2, col3 = st.columns([0.5, 2, 0.5]) 
-                
-                with col2:
-                    if os.path.exists(target['filename']):
-                        # use_container_width=True にすることで、
-                        # 「真ん中のカラムの横幅いっぱい」に画像が表示されます。
-                        st.image(target['filename'], use_container_width=True)
-                    else:
-                        st.error(f"画像が見つかりません: {target['filename']}")
-                
-                # 答えを見るボタン
-                st.write("") 
-                bc1, bc2, bc3 = st.columns([1, 2, 1]) 
-                with bc2:
-                    if st.button("答えを見る"):
-                        st.session_state.
+    if idx >= len(cards):
+        st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=
