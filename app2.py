@@ -22,12 +22,12 @@ st.markdown("""
         font-weight: bold;
         margin-bottom: 20px;
     }
-    /* 正解文字のデザイン */
+    /* 正解文字のデザイン（色を黒に修正） */
     .answer-text {
         text-align: center;
         font-size: 80px;
         font-weight: bold;
-        color: #FF4B4B;
+        color: #000000; /* ★ここを黒に変更しました */
         margin: 20px 0;
     }
     /* 画像を中央に固定する設定 */
@@ -125,7 +125,6 @@ elif st.session_state.mode == 'game':
 
         # 画像の表示
         if not st.session_state.show_answer:
-            # カラムを使って中央に配置
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
                 if os.path.exists(target['filename']):
