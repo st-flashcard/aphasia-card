@@ -9,6 +9,7 @@ st.set_page_config(layout="centered", page_title="ことばの訓練")
 st.markdown("""
     <style>
     /* ボタンを大きく見やすく */
+    .main { background-color: #FFFFFF !important; color: #000000 !important; }
     .stButton button {
         width: 100%;
         height: 60px;
