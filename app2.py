@@ -17,6 +17,16 @@ st.markdown("""
     h1, h2, h3, h4, h5, h6, p, span, div, label {
         color: #000000 !important;
     }
+    /* ★ここが鉄壁ガード！右上のメニューやGithubアイコンを完全に消す */
+    [data-testid="stToolbar"], 
+    [data-testid="stHeader"], 
+    [data-testid="stStatusWidget"], 
+    #MainMenu, 
+    footer {
+        visibility: hidden !important;
+        display: none !important;
+        height: 0px !important;
+    }
  /* ★画像の設定（ここも修正！） */
     [data-testid="stImage"] {
         margin-top: -15px !important;    /* 上の隙間を削って文字に近づく */
