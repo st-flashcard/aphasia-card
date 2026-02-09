@@ -91,7 +91,8 @@ if 'mode' not in st.session_state:
 if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
-    col1, col2 = st.columns(2)
+    # ★ 2個から3個に変更し、col3を追加します
+    col1, col2, col3 = st.columns(3)
     with col1:
         if st.button("🍎 基本の単語"):
             st.session_state.card_list = course_basic.copy()
