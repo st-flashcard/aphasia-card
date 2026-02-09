@@ -2,18 +2,38 @@ import streamlit as st
 import random
 import os
 
-# 1. ページの設定（レイアウトを「centered」にするだけで、基本は真ん中に寄ります）
+# 1. ページの設定
 st.set_page_config(layout="centered")
 
-# 2. デザイン調整（ボタンの見た目だけ）
+# 2. デザイン調整（CSSで真ん中に寄せる作戦）
+# カラムを使わず、この設定だけで真ん中に寄せます
 st.markdown("""
     <style>
+    /* 画像を真ん中に寄せる */
+    div[data-testid="stImage"] {
+        display: flex;
+        justify_content: center;
+    }
+    
+    /* ボタンを真ん中に寄せる */
+    .stButton {
+        display: flex;
+        justify_content: center;
+    }
+    
+    /* ボタンの大きさと見た目 */
     .stButton button {
-        width: 100%;
+        width: 300px; /* 幅を固定 */
+        height: 60px;
         font-size: 20px;
         font-weight: bold;
-        height: 60px;
-        margin-bottom: 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    /* 文字を真ん中に寄せる */
+    h1, h2, h3, p {
+        text-align: center;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -53,32 +73,29 @@ if 'mode' not in st.session_state:
 
 # ■ パターン1：メニュー画面
 if st.session_state.mode == 'menu':
-    st.markdown("<h2 style='text-align: center; margin-bottom: 30px;'>訓練メニューを選んでください</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>訓練メニューを選んでください</h2>", unsafe_allow_html=True)
+    st.write("") # スペース
     
-    # 画面を「1 : 2 : 1」に分割（真ん中の「2」の場所にボタンを置く作戦）
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col2:
-        if st.button("🍎 基本の単語"):
-            st.session_state.card_list = course_basic.copy()
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
-            st.session_state.mode = 'game'
-            st.rerun()
+    if st.button("🍎 基本の単語"):
+        st.session_state.card_list = course_basic.copy()
+        random.shuffle(st.session_state.card_list)
+        st.session_state.current_index = 0
+        st.session_state.show_answer = False
+        st.session_state.mode = 'game'
+        st.rerun()
 
-        if st.button("🐶 動物カテゴリー"):
-            st.session_state.card_list = course_animals.copy()
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
-            st.session_state.mode = 'game'
-            st.rerun()
+    if st.button("🐶 動物カテゴリー"):
+        st.session_state.card_list = course_animals.copy()
+        random.shuffle(st.session_state.card_list)
+        st.session_state.current_index = 0
+        st.session_state.show_answer = False
+        st.session_state.mode = 'game'
+        st.rerun()
 
 # ■ パターン2：ゲーム画面
 elif st.session_state.mode == 'game':
     
-    # サイドバー（メニューに戻るボタン）
+    # サイドバー
     with st.sidebar:
         st.write("メニュー")
         if st.button("← メニューに戻る"):
@@ -90,6 +107,7 @@ elif st.session_state.mode == 'game':
             st.session_state.show_answer = False
             st.rerun()
 
+    # データチェック
     if not st.session_state.card_list:
         st.error("エラー：データがありません")
         if st.button("戻る"):
@@ -101,46 +119,38 @@ elif st.session_state.mode == 'game':
 
         # 終了画面
         if idx >= len(cards):
-            st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
-            col1, col2, col3 = st.columns([1, 2, 1])
-            with col2:
-                if st.button("メニューに戻る"):
-                    st.session_state.mode = 'menu'
-                    st.rerun()
+            st.markdown("<h2>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
+            if st.button("メニューに戻る"):
+                st.session_state.mode = 'menu'
+                st.rerun()
 
-        # 問題画面
+        # 問題表示画面
         else:
             target = cards[idx]
 
-            # 1. ヘッダー（第○問）
-            st.markdown(f"<h3 style='text-align: center;'>第 {idx + 1} 問</h3>", unsafe_allow_html=True)
-            st.write("") # 少し隙間
+            # 1. 第○問
+            st.markdown(f"<h3>第 {idx + 1} 問</h3>", unsafe_allow_html=True)
+            st.write("")
 
-            # 2. メインエリア（ここも 1:2:1 で真ん中に配置）
-            col1, col2, col3 = st.columns([1, 2, 1])
-            
-            with col2:
-                # A. 答えを見る前
-                if not st.session_state.show_answer:
-                    if os.path.exists(target['filename']):
-                        # ★ここ修正：サイズを数値で指定（これが一番安全です）
-                        st.image(target['filename'], width=300)
-                    else:
-                        st.error(f"画像なし: {target['filename']}")
-                    
-                    # 隙間
-                    st.write("")
-                    
-                    if st.button("答えを見る"):
-                        st.session_state.show_answer = True
-                        st.rerun()
-
-                # B. 答えを見た後
+            # A. 答えを見る前
+            if not st.session_state.show_answer:
+                if os.path.exists(target['filename']):
+                    # CSSで中央になるので、そのまま表示（幅は300px）
+                    st.image(target['filename'], width=300)
                 else:
-                    # 正解の文字
-                    st.markdown(f"<h1 style='text-align: center; font-size: 60px; margin: 20px 0;'>{target['answer']}</h1>", unsafe_allow_html=True)
-                    
-                    if st.button("次の問題へ", type="primary"):
-                        st.session_state.current_index += 1
-                        st.session_state.show_answer = False
-                        st.rerun()
+                    # 画像がない場合のエラー表示
+                    st.error(f"画像が見つかりません: {target['filename']}")
+                
+                if st.button("答えを見る"):
+                    st.session_state.show_answer = True
+                    st.rerun()
+
+            # B. 答えを見た後
+            else:
+                # 正解の文字
+                st.markdown(f"<h1 style='font-size: 60px; margin: 30px 0;'>{target['answer']}</h1>", unsafe_allow_html=True)
+                
+                if st.button("次の問題へ", type="primary"):
+                    st.session_state.current_index += 1
+                    st.session_state.show_answer = False
+                    st.rerun()
