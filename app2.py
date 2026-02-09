@@ -5,50 +5,52 @@ import os
 # ページの設定
 st.set_page_config(layout="centered")
 
-# --- CSS設定（ここを強力にしました！）---
+# --- CSS設定（強力な真ん中寄せ & 余白調整）---
 st.markdown("""
     <style>
-    /* 1. 全体の余白調整 */
+    /* 1. 画面上部の余白をガッツリ空ける（これで文字切れを防ぐ） */
     .block-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
+        padding-top: 100px !important; /* 上に100pxの隙間を作る */
+        padding-bottom: 50px !important;
+        max-width: 500px !important;   /* スマホっぽく幅を狭く固定 */
     }
 
-    /* 2. 画像を強制的に真ん中へ配置 */
+    /* 2. 画像を強制的に真ん中へ */
     div[data-testid="stImage"] {
         display: flex;
-        justify_content: center;
-        align-items: center;
-        width: 100%;
+        justify_content: center !important;
+        align-items: center !important;
+        margin: 0 auto !important;
     }
 
-    /* 3. ボタンの入れ物を真ん中へ配置 */
+    /* 3. ボタンを強制的に真ん中へ */
     .stButton {
         display: flex;
-        justify_content: center;
-        width: 100%;
+        justify_content: center !important;
+        margin: 0 auto !important;
     }
 
-    /* 4. ボタン自体のデザイン調整 */
+    /* 4. ボタン自体のデザイン */
     .stButton button {
         width: 100%;
-        max-width: 300px; /* スマホで見やすい最大幅 */
+        max-width: 300px;
         height: 60px;
         font-size: 20px;
         font-weight: bold;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        margin-bottom: 15px; /* ボタンの下に少し隙間 */
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
-    /* 5. 文字関係を全部真ん中揃えに */
-    .title-text, .question-text, h1, h2, h3, p {
+    /* 5. 文字をすべて真ん中揃えに */
+    h1, h2, h3, p, div {
         text-align: center !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # ----------------------------------------
-# 1. データの準備（ここも復活しました！）
+# 1. データの準備
 # ----------------------------------------
 
 course_basic = [
@@ -73,106 +75,3 @@ course_animals = [
 ]
 
 # ----------------------------------------
-# 2. アプリの状態管理
-# ----------------------------------------
-
-if 'mode' not in st.session_state:
-    st.session_state.mode = 'menu'
-    st.session_state.card_list = []
-    st.session_state.current_index = 0
-    st.session_state.show_answer = False
-
-# ----------------------------------------
-# 3. 画面の表示
-# ----------------------------------------
-
-# ■ パターン1：メニュー画面
-if st.session_state.mode == 'menu':
-    st.markdown("<div class='title-text' style='margin-bottom: 30px;'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
-    
-    # ボタンを縦に並べる（これで確実に真ん中に見えます）
-    if st.button("🍎 基本の単語"):
-        st.session_state.card_list = course_basic.copy()
-        random.shuffle(st.session_state.card_list)
-        st.session_state.current_index = 0
-        st.session_state.show_answer = False
-        st.session_state.mode = 'game'
-        st.rerun()
-
-    if st.button("🐶 動物カテゴリー"):
-        st.session_state.card_list = course_animals.copy()
-        random.shuffle(st.session_state.card_list)
-        st.session_state.current_index = 0
-        st.session_state.show_answer = False
-        st.session_state.mode = 'game'
-        st.rerun()
-
-# ■ パターン2：ゲーム画面
-elif st.session_state.mode == 'game':
-    
-    # サイドバー（左の引き出し）
-    with st.sidebar:
-        st.write("メニュー")
-        if st.button("← メニューに戻る"):
-            st.session_state.mode = 'menu'
-            st.rerun()
-        if st.button("もう一度シャッフル"):
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
-            st.rerun()
-
-    # エラー回避
-    if not st.session_state.card_list:
-        st.error("データがありません。メニューに戻ってください。")
-        if st.button("戻る"):
-            st.session_state.mode = 'menu'
-            st.rerun()
-    else:
-        idx = st.session_state.current_index
-        cards = st.session_state.card_list
-
-        # 終了判定
-        if idx >= len(cards):
-            st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
-            st.write("")
-            if st.button("メニューに戻る"):
-                st.session_state.mode = 'menu'
-                st.rerun()
-
-        # 問題表示
-        else:
-            target = cards[idx]
-
-            # ヘッダー（第○問）
-            st.markdown(f"<div class='question-text' style='font-size: 24px; margin-bottom: 20px;'>第 {idx + 1} 問</div>", unsafe_allow_html=True)
-
-            # A. 画像を表示（答えを見る前）
-            if not st.session_state.show_answer:
-                if os.path.exists(target['filename']):
-                    # 幅を300pxに指定して表示（CSSで中央になります）
-                    st.image(target['filename'], width=300)
-                else:
-                    st.error(f"画像なし: {target['filename']}")
-                
-                st.write("") # スペース
-                
-                if st.button("答えを見る"):
-                    st.session_state.show_answer = True
-                    st.rerun()
-
-            # B. 正解を表示（答えを見た後）
-            else:
-                # 正解の文字
-                st.markdown(f"""
-                <div style="text-align: center; width: 100%;">
-                    <h1 style="font-size: 80px; margin-top: 20px; margin-bottom: 30px;">
-                        {target['answer']}
-                    </h1>
-                </div>
-                """, unsafe_allow_html=True)
-
-                if st.button("次の問題へ", type="primary"):
-                    st.session_state.current_index += 1
-                    st.session_state.show_answer = False
-                    st.rerun()
