@@ -2,43 +2,10 @@ import streamlit as st
 import random
 import os
 
-# 1. ページの設定
+# 1. ページの設定（これだけで基本は十分です）
 st.set_page_config(layout="centered")
 
-# 2. デザイン調整（CSSで真ん中に寄せる作戦）
-# カラムを使わず、この設定だけで真ん中に寄せます
-st.markdown("""
-    <style>
-    /* 画像を真ん中に寄せる */
-    div[data-testid="stImage"] {
-        display: flex;
-        justify_content: center;
-    }
-    
-    /* ボタンを真ん中に寄せる */
-    .stButton {
-        display: flex;
-        justify_content: center;
-    }
-    
-    /* ボタンの大きさと見た目 */
-    .stButton button {
-        width: 300px; /* 幅を固定 */
-        height: 60px;
-        font-size: 20px;
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    
-    /* 文字を真ん中に寄せる */
-    h1, h2, h3, p {
-        text-align: center;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# 3. データの準備
+# 2. データの準備（動物リストも入っています）
 course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
@@ -60,23 +27,20 @@ course_animals = [
     {"filename": "tiger.jpg",    "answer": "とら"},
 ]
 
-# 4. アプリの状態管理
+# 3. アプリの状態管理
 if 'mode' not in st.session_state:
     st.session_state.mode = 'menu'
     st.session_state.card_list = []
     st.session_state.current_index = 0
     st.session_state.show_answer = False
 
-# ----------------------------------------
-# 画面の表示
-# ----------------------------------------
+# --- 画面表示 ---
 
 # ■ パターン1：メニュー画面
 if st.session_state.mode == 'menu':
-    st.markdown("<h2>訓練メニューを選んでください</h2>", unsafe_allow_html=True)
-    st.write("") # スペース
+    st.write("### 訓練メニューを選んでください") # タイトルを表示
     
-    if st.button("🍎 基本の単語"):
+    if st.button("🍎 基本の単語コース"):
         st.session_state.card_list = course_basic.copy()
         random.shuffle(st.session_state.card_list)
         st.session_state.current_index = 0
@@ -84,7 +48,7 @@ if st.session_state.mode == 'menu':
         st.session_state.mode = 'game'
         st.rerun()
 
-    if st.button("🐶 動物カテゴリー"):
+    if st.button("🐶 動物カテゴリーコース"):
         st.session_state.card_list = course_animals.copy()
         random.shuffle(st.session_state.card_list)
         st.session_state.current_index = 0
@@ -92,65 +56,46 @@ if st.session_state.mode == 'menu':
         st.session_state.mode = 'game'
         st.rerun()
 
-# ■ パターン2：ゲーム画面
+# ■ パターン2：ゲーム画面（訓練中）
 elif st.session_state.mode == 'game':
     
-    # サイドバー
+    # 左側のメニューに戻るボタン
     with st.sidebar:
-        st.write("メニュー")
         if st.button("← メニューに戻る"):
             st.session_state.mode = 'menu'
             st.rerun()
-        if st.button("もう一度シャッフル"):
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
-            st.rerun()
 
-    # データチェック
-    if not st.session_state.card_list:
-        st.error("エラー：データがありません")
-        if st.button("戻る"):
+    idx = st.session_state.current_index
+    cards = st.session_state.card_list
+
+    # 終了判定
+    if idx >= len(cards):
+        st.write("## 🎉 おつかれさまでした！")
+        if st.button("メニューに戻る"):
             st.session_state.mode = 'menu'
             st.rerun()
     else:
-        idx = st.session_state.current_index
-        cards = st.session_state.card_list
+        target = cards[idx]
+        st.write(f"第 {idx + 1} 問") # 何問目か表示
 
-        # 終了画面
-        if idx >= len(cards):
-            st.markdown("<h2>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
-            if st.button("メニューに戻る"):
-                st.session_state.mode = 'menu'
+        # 答えを見る前
+        if not st.session_state.show_answer:
+            # 画像があるかチェック
+            if os.path.exists(target['filename']):
+                st.image(target['filename'], use_container_width=True)
+            else:
+                st.error(f"画像ファイルが見つかりません: {target['filename']}")
+            
+            # 答えボタン
+            if st.button("答えを見る"):
+                st.session_state.show_answer = True
                 st.rerun()
 
-        # 問題表示画面
+        # 答えを見た後
         else:
-            target = cards[idx]
-
-            # 1. 第○問
-            st.markdown(f"<h3>第 {idx + 1} 問</h3>", unsafe_allow_html=True)
-            st.write("")
-
-            # A. 答えを見る前
-            if not st.session_state.show_answer:
-                if os.path.exists(target['filename']):
-                    # CSSで中央になるので、そのまま表示（幅は300px）
-                    st.image(target['filename'], width=300)
-                else:
-                    # 画像がない場合のエラー表示
-                    st.error(f"画像が見つかりません: {target['filename']}")
-                
-                if st.button("答えを見る"):
-                    st.session_state.show_answer = True
-                    st.rerun()
-
-            # B. 答えを見た後
-            else:
-                # 正解の文字
-                st.markdown(f"<h1 style='font-size: 60px; margin: 30px 0;'>{target['answer']}</h1>", unsafe_allow_html=True)
-                
-                if st.button("次の問題へ", type="primary"):
-                    st.session_state.current_index += 1
-                    st.session_state.show_answer = False
-                    st.rerun()
+            st.write(f"# {target['answer']}") # 大きく答えを表示
+            
+            if st.button("次の問題へ"):
+                st.session_state.current_index += 1
+                st.session_state.show_answer = False
+                st.rerun()
