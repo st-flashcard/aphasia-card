@@ -8,6 +8,10 @@ st.set_page_config(layout="centered", page_title="ことばの訓練")
 # 2. デザインの調整 (CSS)
 st.markdown("""
     <style>
+    /* アプリ全体を強制的に白くする */
+    .stApp {
+        background-color: #FFFFFF !important;
+    }
     .stButton button {
         width: 100%;
         height: 60px;
