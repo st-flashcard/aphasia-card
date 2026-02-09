@@ -2,41 +2,33 @@ import streamlit as st
 import random
 import os
 
-# 1. ページの設定
+# ページの設定
 st.set_page_config(layout="centered")
 
-# 2. 強力なデザイン調整（余白を極限までカット）
+# CSS設定（デザイン調整）
 st.markdown("""
     <style>
-    /* 画面上部の大きな余白を消す */
-    .block-container {
-        padding-top: 10px !important;
-        padding-bottom: 0px !important;
-        max-width: 500px !important;
-    }
-    /* 画像の上下の無駄な隙間を消す */
-    [data-testid="stImage"] {
-        margin-top: -20px !important;
-        margin-bottom: -10px !important;
-        display: flex;
-        justify-content: center;
-    }
-    /* ボタンを押しやすく、かつ高さを抑える */
+    /* ボタンを大きく見やすく */
     .stButton button {
         width: 100%;
-        height: 50px;
-        font-size: 18px;
+        height: 60px;
+        font-size: 20px;
         font-weight: bold;
-        margin-top: 10px;
     }
-    /* 全ての文字を真ん中寄せに */
-    h1, h2, h3, p, div {
-        text-align: center !important;
+    /* タイトル画面の文字 */
+    .title-text {
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 20px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 3. データの準備
+# ----------------------------------------
+# 1. データの準備
+# ----------------------------------------
+
 course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
@@ -47,13 +39,21 @@ course_basic = [
 
 course_animals = [
     {"filename": "dog.jpg",      "answer": "いぬ"},
+    {"filename": "cat.jpg",      "answer": "ねこ"},
     {"filename": "panda.jpg",    "answer": "ぱんだ"},
     {"filename": "lion.jpg",     "answer": "らいおん"},
+    {"filename": "giraffe.jpg",  "answer": "きりん"},
     {"filename": "elephant.jpg", "answer": "ぞう"},
+    {"filename": "koala.jpg",    "answer": "こあら"},
+    {"filename": "gorilla.jpg",  "answer": "ごりら"},
     {"filename": "penguin.jpg",  "answer": "ぺんぎん"},
+    {"filename": "tiger.jpg",    "answer": "とら"},
 ]
 
-# 4. アプリの状態管理
+# ----------------------------------------
+# 2. アプリの状態管理
+# ----------------------------------------
+
 if 'mode' not in st.session_state:
     st.session_state.mode = 'menu'
     st.session_state.card_list = []
@@ -64,66 +64,102 @@ if 'mode' not in st.session_state:
 # 3. 画面の表示
 # ----------------------------------------
 
-# ■ メニュー画面
+# ■ パターン1：メニュー画面
 if st.session_state.mode == 'menu':
-    st.markdown("### 訓練メニュー")
+    st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
-    if st.button("🍎 基本の単語"):
-        st.session_state.card_list = course_basic.copy()
-        random.shuffle(st.session_state.card_list)
-        st.session_state.current_index = 0
-        st.session_state.show_answer = False
-        st.session_state.mode = 'game'
-        st.rerun()
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("🍎 基本の単語"):
+            st.session_state.card_list = course_basic.copy()
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.session_state.mode = 'game'
+            st.rerun()
 
-    if st.button("🐶 動物カテゴリー"):
-        st.session_state.card_list = course_animals.copy()
-        random.shuffle(st.session_state.card_list)
-        st.session_state.current_index = 0
-        st.session_state.show_answer = False
-        st.session_state.mode = 'game'
-        st.rerun()
+    with col2:
+        if st.button("🐶 動物カテゴリー"):
+            st.session_state.card_list = course_animals.copy()
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.session_state.mode = 'game'
+            st.rerun()
 
-# ■ ゲーム画面
+# ■ パターン2：ゲーム画面
 elif st.session_state.mode == 'game':
     
-    # 画面上部に戻るボタンを設置（サイドバーは場所をとるので使いません）
-    if st.button("← メニューに戻る", key="back"):
-        st.session_state.mode = 'menu'
-        st.rerun()
+    # サイドバー（左）にメニューボタンを設置
+    with st.sidebar:
+        st.write("メニュー")
+        if st.button("← メニューに戻る"):
+            st.session_state.mode = 'menu'
+            st.rerun()
+        if st.button("もう一度シャッフル"):
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
 
-    idx = st.session_state.current_index
-    cards = st.session_state.card_list
-
-    if idx >= len(cards):
-        st.markdown("## 🎉 おつかれさま！")
-        if st.button("メニューへ戻る"):
+    # もしカードリストが空っぽならエラー回避
+    if not st.session_state.card_list:
+        st.error("データがありません。メニューに戻ってください。")
+        if st.button("戻る"):
             st.session_state.mode = 'menu'
             st.rerun()
     else:
-        target = cards[idx]
+        idx = st.session_state.current_index
+        cards = st.session_state.card_list
 
-        # 1. 何問目か（小さく表示）
-        st.write(f"第 {idx + 1} 問")
-
-        # 2. 画像（高さを抑えるために width=200 程度に制限）
-        if not st.session_state.show_answer:
-            if os.path.exists(target['filename']):
-                st.image(target['filename'], width=220)
-            else:
-                st.error("画像なし")
-            
-            # 3. 答えボタン
-            if st.button("答えを見る"):
-                st.session_state.show_answer = True
+        # 終了判定
+        if idx >= len(cards):
+            st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
+            if st.button("メニューに戻る"):
+                st.session_state.mode = 'menu'
                 st.rerun()
 
-        # 4. 答えを表示
+        # 問題表示
         else:
-            # 文字が大きすぎるとボタンが下に行くのでサイズを調整
-            st.markdown(f"<h1 style='font-size: 60px;'>{target['answer']}</h1>", unsafe_allow_html=True)
-            
-            if st.button("次の問題へ", type="primary"):
-                st.session_state.current_index += 1
-                st.session_state.show_answer = False
-                st.rerun()
+            target = cards[idx]
+
+            # ヘッダー
+            st.markdown(f"<div style='text-align: center; font-size: 18px; margin-bottom: 10px;'>第 {idx + 1} 問</div>", unsafe_allow_html=True)
+
+            # A. 画像を表示
+            if not st.session_state.show_answer:
+                col1, col2, col3 = st.columns([1, 2, 1])
+                with col2:
+                    if os.path.exists(target['filename']):
+                        # 画像サイズを280に固定
+                        st.image(target['filename'], width=280) 
+                    else:
+                        # 画像がないときのエラー表示
+                        st.error(f"画像が見つかりません: {target['filename']}")
+                
+                # 答えボタン
+                st.write("") 
+                c1, c2, c3 = st.columns([1, 2, 1]) 
+                with c2:
+                    if st.button("答えを見る"):
+                        st.session_state.show_answer = True
+                        st.rerun()
+
+            # B. 正解を表示
+            else:
+                st.markdown(f"""
+                <div style="text-align: center; width: 100%;">
+                    <h1 style="font-size: 80px; margin-top: 10px; margin-bottom: 20px;">
+                        {target['answer']}
+                    </h1>
+                </div>
+                """, unsafe_allow_html=True)
+
+                # 次へボタン
+                c1, c2, c3 = st.columns([1, 2, 1])
+                with c2:
+                    if st.button("次の問題へ", type="primary"):
+                        st.session_state.current_index += 1
+                        st.session_state.show_answer = False
+                        st.rerun()
