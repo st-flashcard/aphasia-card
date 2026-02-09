@@ -19,8 +19,8 @@ st.markdown("""
     }
  /* ★画像の設定（ここも修正！） */
     [data-testid="stImage"] {
-        margin-top: -20px !important;    /* 上の隙間を削って文字に近づく */
-        margin-bottom: -40px !important; /* 下の隙間を削ってボタンに近づく */
+        margin-top: -40px !important;    /* 上の隙間を削って文字に近づく */
+        margin-bottom: -70px !important; /* 下の隙間を削ってボタンに近づく */
     }
     .stButton button {
         width: 100%;
