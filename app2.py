@@ -22,13 +22,17 @@ st.markdown("""
         font-weight: bold;
         margin-bottom: 20px;
     }
+    /* ★追加：画像自体を中央に寄せる設定 */
+    [data-testid="stImage"] {
+        display: flex;
+        justify-content: center;
+    }
     </style>
 """, unsafe_allow_html=True)
 
 # ----------------------------------------
-# 1. データの準備
+# 1. データの準備（変更なし）
 # ----------------------------------------
-
 course_basic = [
     {"filename": "apple.jpg", "answer": "りんご"},
     {"filename": "cat.jpg",   "answer": "ねこ"},
@@ -51,9 +55,8 @@ course_animals = [
 ]
 
 # ----------------------------------------
-# 2. アプリの状態管理
+# 2. アプリの状態管理（変更なし）
 # ----------------------------------------
-
 if 'mode' not in st.session_state:
     st.session_state.mode = 'menu'
     st.session_state.card_list = []
@@ -91,7 +94,6 @@ if st.session_state.mode == 'menu':
 # ■ パターン2：ゲーム画面
 elif st.session_state.mode == 'game':
     
-    # サイドバー（左）にメニューボタンを設置
     with st.sidebar:
         st.write("メニュー")
         if st.button("← メニューに戻る"):
@@ -103,7 +105,6 @@ elif st.session_state.mode == 'game':
             st.session_state.show_answer = False
             st.rerun()
 
-    # もしカードリストが空っぽならエラー回避
     if not st.session_state.card_list:
         st.error("データがありません。メニューに戻ってください。")
         if st.button("戻る"):
@@ -113,32 +114,26 @@ elif st.session_state.mode == 'game':
         idx = st.session_state.current_index
         cards = st.session_state.card_list
 
-        # 終了判定
         if idx >= len(cards):
             st.markdown("<h2 style='text-align: center;'>🎉 おつかれさまでした！</h2>", unsafe_allow_html=True)
             if st.button("メニューに戻る"):
                 st.session_state.mode = 'menu'
                 st.rerun()
 
-        # 問題表示
         else:
             target = cards[idx]
-
-            # ヘッダー
             st.markdown(f"<div style='text-align: center; font-size: 18px; margin-bottom: 10px;'>第 {idx + 1} 問</div>", unsafe_allow_html=True)
 
             # A. 画像を表示
             if not st.session_state.show_answer:
+                # 画像の表示（CSSにより、この col2 の中で中央寄せになります）
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col2:
                     if os.path.exists(target['filename']):
-                        # 画像サイズを280に固定
                         st.image(target['filename'], width=280) 
                     else:
-                        # 画像がないときのエラー表示
                         st.error(f"画像が見つかりません: {target['filename']}")
                 
-                # 答えボタン
                 st.write("") 
                 c1, c2, c3 = st.columns([1, 2, 1]) 
                 with c2:
@@ -156,7 +151,6 @@ elif st.session_state.mode == 'game':
                 </div>
                 """, unsafe_allow_html=True)
 
-                # 次へボタン
                 c1, c2, c3 = st.columns([1, 2, 1])
                 with c2:
                     if st.button("次の問題へ", type="primary"):
