@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 import os
-import data  # ★ここで倉庫（data.py）を呼び出しています！
+import data.py  # ★ここで倉庫（data.py）を呼び出しています！
 
 # 1. ページの設定
 st.set_page_config(layout="centered", page_title="ことばの訓練")
