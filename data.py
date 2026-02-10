@@ -15,15 +15,15 @@ course_animals1 = [
 
 course_animals2 = [
     {"filename": "bear.jpg",     "answer": "くま"},
-    {"filename": "monkey.png",   "answer": "さる"},
+    {"filename": "monkey.jpg",   "answer": "さる"},
     {"filename": "deer.jpg",     "answer": "しか"},
     {"filename": "owl.jpg",      "answer": "ふくろう"},
     {"filename": "zebra.jpg",    "answer": "しまうま"},
     {"filename": "kangaroo.jpg", "answer": "かんがるー"},
-    {"filename": "squirrel.png", "answer": "りす"},
-    {"filename": "pig.png",      "answer": "ぶた"},
-    {"filename": "sheep.png",    "answer": "ひつじ"},
-    {"filename": "rabbit.png",   "answer": "うさぎ"},
+    {"filename": "squirrel.jpg", "answer": "りす"},
+    {"filename": "pig.jpg",      "answer": "ぶた"},
+    {"filename": "sheep.jpg",    "answer": "ひつじ"},
+    {"filename": "rabbit.jpg",   "answer": "うさぎ"},
 ]
 
 course_animals3 = [
@@ -41,10 +41,10 @@ course_animals3 = [
     {"filename": "monkey.png",   "answer": "さる"},
     {"filename": "deer.jpg",     "answer": "しか"},
     {"filename": "owl.jpg",      "answer": "ふくろう"},
-    {"filename": "zebra.jpg",    "answer": "しまうま"},
+   {"filename": "zebra.jpg",    "answer": "しまうま"},
     {"filename": "kangaroo.jpg", "answer": "かんがるー"},
-    {"filename": "squirrel.png", "answer": "りす"},
-    {"filename": "pig.png",      "answer": "ぶた"},
-    {"filename": "sheep.png",    "answer": "ひつじ"},
-    {"filename": "rabbit.png",   "answer": "うさぎ"},
+    {"filename": "squirrel.jpg", "answer": "りす"},
+    {"filename": "pig.jpg",      "answer": "ぶた"},
+    {"filename": "sheep.jpg",    "answer": "ひつじ"},
+    {"filename": "rabbit.jpg",   "answer": "うさぎ"},
 ]
