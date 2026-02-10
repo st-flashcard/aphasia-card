@@ -178,9 +178,8 @@ elif st.session_state.mode == 'game':
             st.session_state.mode = 'menu'
             st.rerun()
     else:
-        target = cards[idx]
-        # ★修正ポイント2：文字の下の余白(margin-bottom)を0にして、画像との距離を詰める
-        st.markdown(f"<p style='text-align: center; margin-bottom: 0px;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
+       target = cards[idx]
+        st.markdown(f"<p style='text-align: center;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
 
         # 画像の表示（まだ正解を見ていない時）
         if not st.session_state.show_answer:
@@ -194,6 +193,7 @@ elif st.session_state.mode == 'game':
             # ヒント表示エリア
             if st.session_state.show_hint:
                 first_char = target['answer'][0]
+                # 最初の文字だけに特別なクラス(hint-big-char)を適用します
                 st.markdown(f"""
                     <div class='hint-container'>
                         ヒント： <span class='hint-big-char'>{first_char}</span> ...
@@ -202,22 +202,21 @@ elif st.session_state.mode == 'game':
             else:
                 st.write("")
 
-            st.write("") # 少し隙間
-
-            # ★修正ポイント1：スマホ対策のため、3分割をやめて単純な2分割にする
-            # 以前: b1, b2, b3 = st.columns([1, 3, 1]) ...
-            
-            btn_left, btn_right = st.columns(2)
-            
-            with btn_left:
-                if st.button("答えを見る"):
-                    st.session_state.show_answer = True
-                    st.rerun()
-            
-            with btn_right:
-                if st.button("ヒント"):
-                    st.session_state.show_hint = True
-                    st.rerun()
+            # ★ここが抜けていました！ボタンエリア復活★
+            st.write("")
+            b1, b2, b3 = st.columns([1, 3, 1])
+            with b2:
+                btn_left, btn_right = st.columns(2)
+                
+                with btn_left:
+                    if st.button("答えを見る"):
+                        st.session_state.show_answer = True
+                        st.rerun()
+                
+                with btn_right:
+                    if st.button("ヒント"):
+                        st.session_state.show_hint = True
+                        st.rerun()
                         
         # 正解の表示（答えを見た後）
         else:
