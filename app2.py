@@ -102,7 +102,7 @@ if st.session_state.mode == 'menu':
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        if st.button("🍎 基本の単語"):
+        if st.button("🐶 動物カテゴリー"):
             # ★ data. をつけて倉庫から呼び出す
             st.session_state.card_list = data.course_basic.copy()
             random.shuffle(st.session_state.card_list)
@@ -112,7 +112,7 @@ if st.session_state.mode == 'menu':
             st.rerun()
 
     with col2:
-        if st.button("🐶 動物カテゴリー"):
+        if st.button("🦁 動物カテゴリー2"):
             # ★ data. をつけて倉庫から呼び出す
             st.session_state.card_list = data.course_animals.copy()
             random.shuffle(st.session_state.card_list)
@@ -122,7 +122,7 @@ if st.session_state.mode == 'menu':
             st.rerun()
 
     with col3:
-        if st.button("🦁 動物カテゴリー2"):
+        if st.button("🐏 動物カテゴリー3"):
             # ★ data. をつけて倉庫から呼び出す
             st.session_state.card_list = data.course_animals2.copy()
             random.shuffle(st.session_state.card_list)
