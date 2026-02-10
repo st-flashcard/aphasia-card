@@ -124,35 +124,23 @@ if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
     # === 動物エリア ===
-    st.markdown("### 🐶 動物")
+  st.markdown("### 🐶 動物")
     col1, col2, col3 = st.columns(3)
     with col1:
-        if st.button("🐶 動物カテゴリー1"):
-            # ★ course_animals1 に変更
-            st.session_state.card_list = data.course_animals1.copy()
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
+        if st.button("動物 1"):
+            st.session_state.card_list = data.course_animals1.copy() # ←名前は合わせてね
             st.session_state.mode = 'game'
             st.rerun()
 
     with col2:
-        if st.button("🦁 動物カテゴリー2"):
-            # ★ course_animals2 に変更
-            st.session_state.card_list = data.course_animals2.copy()
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
+       if st.button("動物 2"):
+            st.session_state.card_list = data.course_animals2.copy() # ←名前は合わせてね
             st.session_state.mode = 'game'
             st.rerun()
 
     with col3:
-        if st.button("🐏 動物カテゴリー3"):
-            # ★ course_animals3 に変更
-            st.session_state.card_list = data.course_animals3.copy()
-            random.shuffle(st.session_state.card_list)
-            st.session_state.current_index = 0
-            st.session_state.show_answer = False
+         if st.button("動物 3"):
+            st.session_state.card_list = data.course_animals3.copy() # ←名前は合わせてね
             st.session_state.mode = 'game'
             st.rerun()
             
