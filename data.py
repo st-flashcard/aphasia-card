@@ -1,20 +1,7 @@
 # ここはデータ置き場（倉庫）です
 
-course_basic = [
-   {"filename": "apple.jpg", "answer": "りんご"},
-    {"filename": "cat.jpg",   "answer": "ねこ"},
-    {"filename": "pen.jpg",   "answer": "ぺん"},
-    {"filename": "dog.jpg",    "answer": "いぬ"},
-    {"filename": "book.jpg",   "answer": "ほん"},
-    {"filename": "car.jpg",    "answer": "くるま"},
-    {"filename": "flower.jpg", "answer": "はな"},
-    {"filename": "fish.jpg",   "answer": "さかな"},
-    {"filename": "bird.jpg",   "answer": "とり"},
-    {"filename": "shoe.jpg",   "answer": "くつ"},
-]
-
-course_animals = [
-    {"filename": "dog.jpg",      "answer": "いぬ"},
+course_animals1 = [
+   {"filename": "dog.jpg",      "answer": "いぬ"},
     {"filename": "cat.jpg",      "answer": "ねこ"},
     {"filename": "panda.jpg",    "answer": "ぱんだ"},
     {"filename": "lion.jpg",     "answer": "らいおん"},
@@ -27,6 +14,19 @@ course_animals = [
 ]
 
 course_animals2 = [
+    {"filename": "dog.jpg",      "answer": "いぬ"},
+    {"filename": "cat.jpg",      "answer": "ねこ"},
+    {"filename": "panda.jpg",    "answer": "ぱんだ"},
+    {"filename": "lion.jpg",     "answer": "らいおん"},
+    {"filename": "giraffe.jpg",  "answer": "きりん"},
+    {"filename": "elephant.jpg", "answer": "ぞう"},
+    {"filename": "koala.jpg",    "answer": "こあら"},
+    {"filename": "gorilla.jpg",  "answer": "ごりら"},
+    {"filename": "penguin.jpg",  "answer": "ぺんぎん"},
+    {"filename": "tiger.jpg",    "answer": "とら"},
+]
+
+course_animals3 = [
     {"filename": "dog.jpg",      "answer": "いぬ"},
     {"filename": "cat.jpg",      "answer": "ねこ"},
     {"filename": "panda.jpg",    "answer": "ぱんだ"},
