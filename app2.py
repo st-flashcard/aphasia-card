@@ -129,7 +129,7 @@ if st.session_state.mode == 'menu':
     
     with col1:
         if st.button("動物 1"):
-            st.session_state.card_list = data.course_animals.copy() # data.pyを確認してね
+            st.session_state.card_list = data.course_animals1.copy() 
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
