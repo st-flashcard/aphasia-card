@@ -30,7 +30,7 @@ st.markdown("""
     }
  /* 画像と文字の距離調整 */
     [data-testid="stImage"] {
-        margin-top: -75px !important;    /* 上の隙間を削って文字に近づく */
+        margin-top: -70px !important;    /* 上の隙間を削って文字に近づく */
         margin-bottom: -80px !important; /* 下の隙間を削ってボタンに近づく */
     }
     .stButton button {
@@ -179,8 +179,8 @@ elif st.session_state.mode == 'game':
             st.rerun()
     else:
         target = cards[idx]
-        # ★ここを修正しました：z-indexを追加して文字を最前面に！
-        st.markdown(f"<p style='text-align: center; margin-bottom: 0px; position: relative; z-index: 999;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
+        # ★修正ポイント2：文字の下の余白(margin-bottom)を0にして、画像との距離を詰める
+        st.markdown(f"<p style='text-align: center; margin-bottom: 0px;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
 
         # 画像の表示（まだ正解を見ていない時）
         if not st.session_state.show_answer:
@@ -194,7 +194,6 @@ elif st.session_state.mode == 'game':
             # ヒント表示エリア
             if st.session_state.show_hint:
                 first_char = target['answer'][0]
-                # 最初の文字だけに特別なクラス(hint-big-char)を適用します
                 st.markdown(f"""
                     <div class='hint-container'>
                         ヒント： <span class='hint-big-char'>{first_char}</span> ...
@@ -203,21 +202,22 @@ elif st.session_state.mode == 'game':
             else:
                 st.write("")
 
-            # ★ここが抜けていました！ボタンエリア復活★
-            st.write("")
-            b1, b2, b3 = st.columns([1, 3, 1])
-            with b2:
-                btn_left, btn_right = st.columns(2)
-                
-                with btn_left:
-                    if st.button("答えを見る"):
-                        st.session_state.show_answer = True
-                        st.rerun()
-                
-                with btn_right:
-                    if st.button("ヒント"):
-                        st.session_state.show_hint = True
-                        st.rerun()
+            st.write("") # 少し隙間
+
+            # ★修正ポイント1：スマホ対策のため、3分割をやめて単純な2分割にする
+            # 以前: b1, b2, b3 = st.columns([1, 3, 1]) ...
+            
+            btn_left, btn_right = st.columns(2)
+            
+            with btn_left:
+                if st.button("答えを見る"):
+                    st.session_state.show_answer = True
+                    st.rerun()
+            
+            with btn_right:
+                if st.button("ヒント"):
+                    st.session_state.show_hint = True
+                    st.rerun()
                         
         # 正解の表示（答えを見た後）
         else:
