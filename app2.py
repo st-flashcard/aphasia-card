@@ -102,9 +102,9 @@ if st.session_state.mode == 'menu':
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        if st.button("🐶 動物カテゴリー"):
-            # ★ data. をつけて倉庫から呼び出す
-            st.session_state.card_list = data.course_basic.copy()
+        if st.button("🐶 動物カテゴリー1"):
+            # ★ course_animals1 に変更
+            st.session_state.card_list = data.course_animals1.copy()
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
             st.session_state.show_answer = False
@@ -113,8 +113,8 @@ if st.session_state.mode == 'menu':
 
     with col2:
         if st.button("🦁 動物カテゴリー2"):
-            # ★ data. をつけて倉庫から呼び出す
-            st.session_state.card_list = data.course_animals.copy()
+            # ★ course_animals2 に変更
+            st.session_state.card_list = data.course_animals2.copy()
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
             st.session_state.show_answer = False
@@ -123,8 +123,8 @@ if st.session_state.mode == 'menu':
 
     with col3:
         if st.button("🐏 動物カテゴリー3"):
-            # ★ data. をつけて倉庫から呼び出す
-            st.session_state.card_list = data.course_animals2.copy()
+            # ★ course_animals3 に変更
+            st.session_state.card_list = data.course_animals3.copy()
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
             st.session_state.show_answer = False
