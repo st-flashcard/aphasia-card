@@ -205,7 +205,7 @@ elif st.session_state.mode == 'game':
 
             # ★ここが抜けていました！ボタンエリア復活★
             st.write("")
-            b1, b2, b3 = st.columns([1, 3, 1])
+            b1, b2, b3 = st.columns([1, 2, 1])
             with b2:
                 btn_left, btn_right = st.columns(2)
                 
