@@ -38,7 +38,7 @@ course_animals3 = [
     {"filename": "penguin.jpg",  "answer": "ぺんぎん"},
     {"filename": "tiger.jpg",    "answer": "とら"},
     {"filename": "bear.jpg",     "answer": "くま"},
-    {"filename": "monkey.png",   "answer": "さる"},
+    {"filename": "monkey.jpg",   "answer": "さる"},
     {"filename": "deer.jpg",     "answer": "しか"},
     {"filename": "owl.jpg",      "answer": "ふくろう"},
    {"filename": "zebra.jpg",    "answer": "しまうま"},
