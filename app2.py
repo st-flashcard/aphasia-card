@@ -54,7 +54,32 @@ st.markdown("""
         color: #000000; /* ★ここを黒に変更しました */
         margin: 20px 0;
     }
-    /* ★ここが今回の修正ポイント（ボタンの色を徹底固定） */
+　　/* ★ここからヒントのデザインを変更★ */
+　    
+    /* ヒント全体を囲む枠（ベースラインで揃える設定） */
+    .hint-container {
+        text-align: center;
+        font-size: 40px;           /* 「ヒント：」の文字サイズ */
+        font-weight: bold;
+        color: #555555 !important; /* 基本は少しグレー */
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: flex;             /* 横並びにする */
+        justify-content: center;   /* 中央寄せ */
+        align-items: baseline;     /* 文字の底辺を揃える */
+    }
+
+    /* 特大の1文字目 */
+    .hint-big-char {
+        font-size: 120px;          /* ドーンと大きく！ */
+        color: #000000 !important; /* ここだけ真っ黒で強調 */
+        margin-left: 15px;         /* 左に少し隙間 */
+        margin-right: 5px;         /* 右に少し隙間 */
+        line-height: 1;            /* 行間を詰める */
+    }
+    /* ★ここまで★ */
+    
+    /* ボタンの色を徹底固定 */
     .stButton > button { 
         width: 100%; 
         height: 60px; 
@@ -168,9 +193,14 @@ elif st.session_state.mode == 'game':
                 else:
                     st.error(f"画像が見つかりません: {target['filename']}")
             # ☆ヒント表示
-            if st.session_state.show_hint:
+          if st.session_state.show_hint:
                 first_char = target['answer'][0]
-                st.markdown(f"<div class='hint-text'>ヒント： {first_char} ...</div>", unsafe_allow_html=True)
+                # 最初の文字だけに特別なクラス(hint-big-char)を適用します
+                st.markdown(f"""
+                    <div class='hint-container'>
+                        ヒント： <span class='hint-big-char'>{first_char}</span> ...
+                    </div>
+                """, unsafe_allow_html=True)
             else:
                 st.write("")
             
