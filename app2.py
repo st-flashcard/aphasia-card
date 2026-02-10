@@ -203,7 +203,23 @@ elif st.session_state.mode == 'game':
             else:
                 st.write("")
 
-            # ボタンエリア
+            # ★ここが抜けていました！ボタンエリア復活★
+            st.write("")
+            b1, b2, b3 = st.columns([1, 3, 1])
+            with b2:
+                btn_left, btn_right = st.columns(2)
+                
+                with btn_left:
+                    if st.button("答えを見る"):
+                        st.session_state.show_answer = True
+                        st.rerun()
+                
+                with btn_right:
+                    if st.button("ヒント"):
+                        st.session_state.show_hint = True
+                        st.rerun()
+                        
+        # 正解の表示（答えを見た後）
         else:
             st.markdown(f"<div class='answer-text'>{target['answer']}</div>", unsafe_allow_html=True)
             
@@ -212,4 +228,5 @@ elif st.session_state.mode == 'game':
                 if st.button("次の問題へ", type="primary"):
                     st.session_state.current_index += 1
                     st.session_state.show_answer = False
+                    st.session_state.show_hint = False
                     st.rerun()
