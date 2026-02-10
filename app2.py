@@ -123,9 +123,9 @@ if 'show_hint' not in st.session_state:
 if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
-    # ★ 2個から3個に変更し、col3を追加します
+    # === 動物エリア ===
+    st.markdown("### 🐶 動物")
     col1, col2, col3 = st.columns(3)
-    
     with col1:
         if st.button("🐶 動物カテゴリー1"):
             # ★ course_animals1 に変更
