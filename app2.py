@@ -30,7 +30,7 @@ st.markdown("""
     }
  /* 画像と文字の距離調整 */
     [data-testid="stImage"] {
-        margin-top: -70px !important;    /* 上の隙間を削って文字に近づく */
+        margin-top: -15px !important;    /* 上の隙間を削って文字に近づく */
         margin-bottom: -65px !important; /* 下の隙間を削ってボタンに近づく */
     }
     .stButton button {
