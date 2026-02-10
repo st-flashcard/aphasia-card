@@ -18,7 +18,7 @@ st.markdown("""
     h1, h2, h3, h4, h5, h6, p, span, div, label {
         color: #000000 !important;
     }
-    /* ★ここが鉄壁ガード！右上のメニューやGithubアイコンを完全に消す */
+    /* ここが鉄壁ガード！右上のメニューやGithubアイコンを完全に消す */
     [data-testid="stToolbar"], 
     [data-testid="stHeader"], 
     [data-testid="stStatusWidget"], 
@@ -54,7 +54,16 @@ st.markdown("""
         color: #000000; /* ★ここを黒に変更しました */
         margin: 20px 0;
     }
-    /* ★ここが今回の修正ポイント（ボタンの色を徹底固定） */
+　　/* ヒント文字のデザイン（★追加） */
+    .hint-text {
+        text-align: center;
+        font-size: 50px;       /* 正解より少し小さめ */
+        font-weight: bold;
+        color: #555555 !important; /* 少しグレーにして区別 */
+        margin-top: 20px;
+        margin-bottom: 10px;
+    
+    /* ボタンの色を徹底固定 */
     .stButton > button { 
         width: 100%; 
         height: 60px; 
@@ -156,7 +165,7 @@ elif st.session_state.mode == 'game':
         target = cards[idx]
         st.markdown(f"<p style='text-align: center;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
 
-        # 画像の表示
+        # 画像の表示（まだ正解を見ていない時）
         if not st.session_state.show_answer:
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
@@ -165,13 +174,34 @@ elif st.session_state.mode == 'game':
                 else:
                     st.error(f"画像が見つかりません: {target['filename']}")
             
-            # 答えを見るボタン
+            # ★ヒント表示エリア
+            if st.session_state.show_hint:
+                # 1文字目を取得
+                first_char = target['answer'][0]
+                st.markdown(f"<div class='hint-text'>ヒント： {first_char} ...</div>", unsafe_allow_html=True)
+            else:
+                # ヒントが出ていないときは空白で高さを確保しない（お好みで）
+                st.write("")
+
+            # ★ボタンエリア（ここを改造しました）
             st.write("")
-            b1, b2, b3 = st.columns([1, 2, 1])
+            # カラムを [1, 3, 1] にして、中央(3)の中にさらに2つのボタンを並べる
+            b1, b2, b3 = st.columns([1, 3, 1])
             with b2:
-                if st.button("答えを見る"):
-                    st.session_state.show_answer = True
-                    st.rerun()
+                # ボタンを左右に並べるためのカラム作成
+                btn_left, btn_right = st.columns(2)
+                
+                with btn_left:
+                    if st.button("答えを見る"):
+                        st.session_state.show_answer = True
+                        st.rerun()
+                
+                with btn_right:
+                    # ヒントがまだの時だけ押せるようにしてもいいですが、
+                    # 今回は押し直しても大丈夫なようにそのまま配置
+                    if st.button("ヒント"):
+                        st.session_state.show_hint = True
+                        st.rerun()
 
         # 正解の表示
         else:
