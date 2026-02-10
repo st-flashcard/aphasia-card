@@ -124,24 +124,73 @@ if st.session_state.mode == 'menu':
     st.markdown("<div class='title-text'>訓練メニューを選んでください</div>", unsafe_allow_html=True)
     
     # === 動物エリア ===
-  st.markdown("### 🐶 動物")
+    st.markdown("### 🐶 動物")
     col1, col2, col3 = st.columns(3)
+    
     with col1:
         if st.button("動物 1"):
-            st.session_state.card_list = data.course_animals1.copy() # ←名前は合わせてね
+            st.session_state.card_list = data.course_animals.copy() # data.pyを確認してね
             st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
             st.rerun()
 
     with col2:
-       if st.button("動物 2"):
-            st.session_state.card_list = data.course_animals2.copy() # ←名前は合わせてね
+        if st.button("動物 2"):
+            st.session_state.card_list = data.course_animals2.copy() # data.pyを確認してね
             st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
             st.rerun()
 
     with col3:
-         if st.button("動物 3"):
-            st.session_state.card_list = data.course_animals3.copy() # ←名前は合わせてね
+        if st.button("動物 3"):
+            st.session_state.card_list = data.course_animals3.copy() # data.pyを確認してね
             st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
+
+    st.write("---") # 区切り線
+
+    # === 食べ物エリア ===
+    st.markdown("### 🥦 食べ物")
+    f_col1, f_col2 = st.columns(2)
+    
+    with f_col1:
+        if st.button("野菜"):
+            st.session_state.card_list = data.course_vegetables.copy() # data.pyにこれがあるか確認！
+            st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
+            
+    with f_col2:
+        if st.button("果物"):
+            st.session_state.card_list = data.course_fruits.copy() # data.pyにこれがあるか確認！
+            st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
+
+    st.write("---") # 区切り線
+
+    # === 生活用品エリア ===
+    st.markdown("### 👓 生活")
+    l_col1, l_col2 = st.columns(2)
+    
+    with l_col1:
+        if st.button("身の回りのもの"):
+            st.session_state.card_list = data.course_daily_items.copy() # data.pyにこれがあるか確認！
+            st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
             st.rerun()
             
 # ■ ゲーム画面
