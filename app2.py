@@ -98,6 +98,9 @@ if 'mode' not in st.session_state:
     st.session_state.current_index = 0
     st.session_state.show_answer = False
 
+# ★ここが重要！後から追加した変数は、個別にチェックして作る必要があります
+if 'show_hint' not in st.session_state:
+    st.session_state.show_hint = False
 # ----------------------------------------
 # 4. 画面表示のロジック
 # ----------------------------------------
