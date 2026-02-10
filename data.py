@@ -107,3 +107,34 @@ course_daily_items2 = [
     {"filename": "table.jpg",           "answer": "つくえ"},
     {"filename": "bed.jpg",             "answer": "べっど"},
 ]
+
+# ----------------------------------------
+# 🚀 乗り物コーナー（各10問）
+# ----------------------------------------
+# 基本の乗り物セット
+course_vehicles1 = [
+    {"filename": "car.jpg",           "answer": "くるま"},
+    {"filename": "airplane.jpg",      "answer": "ひこうき"},
+    {"filename": "train.jpg",         "answer": "でんしゃ"},
+    {"filename": "bicycle.jpg",       "answer": "じてんしゃ"},
+    {"filename": "bus.jpg",           "answer": "ばす"},
+    {"filename": "ship.jpg",          "answer": "ふね"},
+    {"filename": "motorcycle.jpg",    "answer": "ばいく"},
+    {"filename": "shinkansen.jpg",    "answer": "しんかんせん"},
+    {"filename": "helicopter.jpg",    "answer": "へりこぷたー"},
+    {"filename": "truck.jpg",         "answer": "とらっく"},
+]
+
+# 働く車・その他の乗り物セット
+course_vehicles2 = [
+    {"filename": "taxi.jpg",          "answer": "たくしー"},
+    {"filename": "police_car.jpg",    "answer": "ぱとかー"},
+    {"filename": "fire_engine.jpg",   "answer": "しょうぼうしゃ"},
+    {"filename": "ambulance.jpg",     "answer": "きゅうきゅうしゃ"},
+    {"filename": "rocket.jpg",        "answer": "ろけっと"},
+    {"filename": "submarine.jpg",     "answer": "せんすいかん"},
+    {"filename": "stroller.jpg",      "answer": "べびーかー"},
+    {"filename": "tricycle.jpg",      "answer": "さんりんしゃ"},
+    {"filename": "yacht.jpg",         "answer": "よっと"},
+    {"filename": "cable_car.jpg",     "answer": "ろーぷうえい"},
+]
