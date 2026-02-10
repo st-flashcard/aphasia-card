@@ -182,7 +182,7 @@ elif st.session_state.mode == 'game':
         target = cards[idx]
         st.markdown(f"<p style='text-align: center;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
 
-        # 画像の表示
+        # 画像の表示（まだ正解を見ていない時）
         if not st.session_state.show_answer:
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
@@ -190,8 +190,9 @@ elif st.session_state.mode == 'game':
                     st.image(target['filename'], use_container_width=True)
                 else:
                     st.error(f"画像が見つかりません: {target['filename']}")
-            # ☆ヒント表示
-          if st.session_state.show_hint:
+            
+            # ヒント表示エリア
+            if st.session_state.show_hint:
                 first_char = target['answer'][0]
                 # 最初の文字だけに特別なクラス(hint-big-char)を適用します
                 st.markdown(f"""
@@ -201,24 +202,8 @@ elif st.session_state.mode == 'game':
                 """, unsafe_allow_html=True)
             else:
                 st.write("")
-            
-           # ボタンエリア
-            st.write("")
-            b1, b2, b3 = st.columns([1, 3, 1])
-            with b2:
-                btn_left, btn_right = st.columns(2)
-                
-                with btn_left:
-                    if st.button("答えを見る"):
-                        st.session_state.show_answer = True
-                        st.rerun()
-                
-                with btn_right:
-                    if st.button("ヒント"):
-                        st.session_state.show_hint = True
-                        st.rerun()
 
-        # 正解の表示
+            # ボタンエリア
         else:
             st.markdown(f"<div class='answer-text'>{target['answer']}</div>", unsafe_allow_html=True)
             
