@@ -186,13 +186,22 @@ if st.session_state.mode == 'menu':
     
     with l_col1:
         if st.button("身の回りのもの"):
-            st.session_state.card_list = data.course_daily_items.copy() # data.pyにこれがあるか確認！
+            st.session_state.card_list = data.course_daily1_items.copy() # data.pyにこれがあるか確認！
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
             st.session_state.show_answer = False
             st.rerun()
-            
+    with l_col2:
+        if st.button("身の回りのもの"):
+            st.session_state.card_list = data.course_daily2_items.copy() # data.pyにこれがあるか確認！
+            st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
+
+
 # ■ ゲーム画面
 elif st.session_state.mode == 'game':
     with st.sidebar:
