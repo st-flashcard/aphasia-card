@@ -167,14 +167,28 @@ elif st.session_state.mode == 'game':
                     st.image(target['filename'], use_container_width=True)
                 else:
                     st.error(f"画像が見つかりません: {target['filename']}")
+            # ☆ヒント表示
+            if st.session_state.show_hint:
+                first_char = target['answer'][0]
+                st.markdown(f"<div class='hint-text'>ヒント： {first_char} ...</div>", unsafe_allow_html=True)
+            else:
+                st.write("")
             
-            # 答えを見るボタン
+           # ボタンエリア
             st.write("")
-            b1, b2, b3 = st.columns([1, 2, 1])
+            b1, b2, b3 = st.columns([1, 3, 1])
             with b2:
-                if st.button("答えを見る"):
-                    st.session_state.show_answer = True
-                    st.rerun()
+                btn_left, btn_right = st.columns(2)
+                
+                with btn_left:
+                    if st.button("答えを見る"):
+                        st.session_state.show_answer = True
+                        st.rerun()
+                
+                with btn_right:
+                    if st.button("ヒント"):
+                        st.session_state.show_hint = True
+                        st.rerun()
 
         # 正解の表示
         else:
