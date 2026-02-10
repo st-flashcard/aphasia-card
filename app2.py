@@ -54,9 +54,8 @@ st.markdown("""
         color: #000000; /* ★ここを黒に変更しました */
         margin: 20px 0;
     }
-　　/* ★ここからヒントのデザインを変更★ */
-　    
-    /* ヒント全体を囲む枠（ベースラインで揃える設定） */
+
+    /* ヒントのデザイン */
     .hint-container {
         text-align: center;
         font-size: 40px;           /* 「ヒント：」の文字サイズ */
@@ -77,9 +76,8 @@ st.markdown("""
         margin-right: 5px;         /* 右に少し隙間 */
         line-height: 1;            /* 行間を詰める */
     }
-    /* ★ここまで★ */
-    
-    /* ボタンの色を徹底固定 */
+
+    /* ボタンのデザイン */
     .stButton > button { 
         width: 100%; 
         height: 60px; 
