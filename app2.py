@@ -221,7 +221,7 @@ elif st.session_state.mode == 'game':
                         
         # 正解の表示（答えを見た後）
         else:
-            st.markdown(f"<div class='answer-text'>{target['answer']}</div>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align: center; margin-bottom: 0px; position: relative; z-index: 999;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
             
             n1, n2, n3 = st.columns([1, 2, 1])
             with n2:
