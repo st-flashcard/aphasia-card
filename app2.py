@@ -179,8 +179,9 @@ elif st.session_state.mode == 'game':
             st.rerun()
     else:
         target = cards[idx]
-        st.markdown(f"<p style='text-align: center;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
-
+        # ★ここを修正しました：z-indexを追加して文字を最前面に！
+        st.markdown(f"<p style='text-align: center; margin-bottom: 0px; position: relative; z-index: 999;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
+        
         # 画像の表示（まだ正解を見ていない時）
         if not st.session_state.show_answer:
             c1, c2, c3 = st.columns([1, 2, 1])
