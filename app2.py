@@ -58,7 +58,7 @@ st.markdown("""
     /* ヒントのデザイン */
     .hint-container {
         text-align: center;
-        font-size: 40px;           /* 「ヒント：」の文字サイズ */
+        font-size: 20px;           /* 「ヒント：」の文字サイズ */
         font-weight: bold;
         color: #555555 !important; /* 基本は少しグレー */
         margin-top: 20px;
@@ -70,7 +70,7 @@ st.markdown("""
 
     /* 特大の1文字目 */
     .hint-big-char {
-        font-size: 120px;          /* ドーンと大きく！ */
+        font-size: 60px;          /* ドーンと大きく！ */
         color: #000000 !important; /* ここだけ真っ黒で強調 */
         margin-left: 15px;         /* 左に少し隙間 */
         margin-right: 5px;         /* 右に少し隙間 */
