@@ -178,7 +178,7 @@ elif st.session_state.mode == 'game':
             st.session_state.mode = 'menu'
             st.rerun()
     else:
-       target = cards[idx]
+        target = cards[idx]
         st.markdown(f"<p style='text-align: center;'>第 {idx + 1} 問 / {len(cards)} 問</p>", unsafe_allow_html=True)
 
         # 画像の表示（まだ正解を見ていない時）
@@ -217,7 +217,7 @@ elif st.session_state.mode == 'game':
                     if st.button("ヒント"):
                         st.session_state.show_hint = True
                         st.rerun()
-                        
+
         # 正解の表示（答えを見た後）
         else:
             st.markdown(f"<div class='answer-text'>{target['answer']}</div>", unsafe_allow_html=True)
