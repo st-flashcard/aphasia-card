@@ -101,31 +101,38 @@ st.markdown("""
         margin-right: auto !important;
     }
     
-    /* ★★★ スマホでもボタンを横並びにする魔法 ★★★ */
-    /* Streamlitのcolumnsをスマホでも横並びに強制する */
-    [data-testid="column"] {
-        min-width: 0 !important;
-        flex: 1 1 0 !important;
-    }
+    /* ★★★ スマホ縦向きでも絶対に横並びにする魔法 ★★★ */
     
-    /* メニューボタンエリアを横並びグリッドにする */
-    .menu-button-row {
+    /* Streamlitのcolumnsの親要素を強制的にflexにする */
+    [data-testid="stHorizontalBlock"] {
         display: flex !important;
+        flex-direction: row !important;
         gap: 8px !important;
-        margin-bottom: 15px !important;
+        width: 100% !important;
     }
     
-    .menu-button-row .stButton {
-        flex: 1 !important;
+    /* 各カラムを横並びに強制 */
+    [data-testid="column"] {
+        flex: 1 1 0% !important;
         min-width: 0 !important;
+        width: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     
-    .menu-button-row .stButton button {
+    /* ボタンを親要素いっぱいに広げる */
+    [data-testid="column"] .stButton {
+        width: 100% !important;
+    }
+    
+    /* ボタンのスタイル調整 */
+    [data-testid="column"] .stButton button {
         font-size: 16px !important;
         height: 55px !important;
         padding: 8px 4px !important;
         white-space: normal !important;
         line-height: 1.2 !important;
+        word-break: keep-all !important;
     }
     
     /* カテゴリタイトルのスタイル */
@@ -137,15 +144,29 @@ st.markdown("""
         text-align: left !important;
     }
     
-    /* スマホ対応: 小さい画面ではボタンの文字をさらに小さく */
+    /* スマホ縦向き専用の調整 */
     @media (max-width: 480px) {
-        .menu-button-row .stButton button {
-            font-size: 14px !important;
+        [data-testid="stHorizontalBlock"] {
+            gap: 6px !important;
+        }
+        
+        [data-testid="column"] .stButton button {
+            font-size: 13px !important;
             height: 50px !important;
+            padding: 6px 2px !important;
         }
         
         .category-title {
             font-size: 18px !important;
+        }
+    }
+    
+    /* 超小型スマホ用 */
+    @media (max-width: 360px) {
+        [data-testid="column"] .stButton button {
+            font-size: 11px !important;
+            height: 48px !important;
+            padding: 4px 2px !important;
         }
     }
     </style>
@@ -173,7 +194,6 @@ if st.session_state.mode == 'menu':
     
     # === 動物エリア ===
     st.markdown("<div class='category-title'>🐶 動物</div>", unsafe_allow_html=True)
-    st.markdown("<div class='menu-button-row'>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -202,12 +222,9 @@ if st.session_state.mode == 'menu':
             st.session_state.current_index = 0
             st.session_state.show_answer = False
             st.rerun()
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
     # === 食べ物エリア ===
     st.markdown("<div class='category-title'>🥦 食べ物</div>", unsafe_allow_html=True)
-    st.markdown("<div class='menu-button-row'>", unsafe_allow_html=True)
     f_col1, f_col2 = st.columns(2)
     
     with f_col1:
@@ -227,12 +244,9 @@ if st.session_state.mode == 'menu':
             st.session_state.current_index = 0
             st.session_state.show_answer = False
             st.rerun()
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
     # === 生活用品エリア ===
     st.markdown("<div class='category-title'>👓 生活</div>", unsafe_allow_html=True)
-    st.markdown("<div class='menu-button-row'>", unsafe_allow_html=True)
     l_col1, l_col2 = st.columns(2)
     
     with l_col1:
@@ -251,8 +265,6 @@ if st.session_state.mode == 'menu':
             st.session_state.current_index = 0
             st.session_state.show_answer = False
             st.rerun()
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ■ ゲーム画面
