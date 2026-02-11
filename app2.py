@@ -138,7 +138,7 @@ if st.session_state.mode == 'menu':
 
     with col2:
         if st.button("動物 2"):
-            st.session_state.card_list = data.course_animals2.copy() # data.pyを確認してね
+            st.session_state.card_list = data.course_animals2.copy() 
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
@@ -147,7 +147,7 @@ if st.session_state.mode == 'menu':
 
     with col3:
         if st.button("動物 3"):
-            st.session_state.card_list = data.course_animals3.copy() # data.pyを確認してね
+            st.session_state.card_list = data.course_animals3.copy()
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
@@ -162,7 +162,7 @@ if st.session_state.mode == 'menu':
     
     with f_col1:
         if st.button("野菜"):
-            st.session_state.card_list = data.course_vegetables.copy() # data.pyにこれがあるか確認！
+            st.session_state.card_list = data.course_vegetables.copy()
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
@@ -171,7 +171,7 @@ if st.session_state.mode == 'menu':
             
     with f_col2:
         if st.button("果物"):
-            st.session_state.card_list = data.course_fruits.copy() # data.pyにこれがあるか確認！
+            st.session_state.card_list = data.course_fruits.copy()
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
@@ -185,23 +185,49 @@ if st.session_state.mode == 'menu':
     l_col1, l_col2 = st.columns(2)
     
     with l_col1:
-        if st.button("身の回りのもの"):
-            st.session_state.card_list = data.course_daily1_items.copy() # data.pyにこれがあるか確認！
+        if st.button("生活用品 1"):
+            # ★修正箇所：名前を data.py に合わせました
+            st.session_state.card_list = data.course_daily_items1.copy() 
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
             st.session_state.show_answer = False
             st.rerun()
     with l_col2:
-        if st.button("身の回りのもの"):
-            st.session_state.card_list = data.course_daily2_items.copy() # data.pyにこれがあるか確認！
+        if st.button("生活用品 2"):
+            # ★修正箇所：名前を data.py に合わせました
+            st.session_state.card_list = data.course_daily_items2.copy() 
             st.session_state.mode = 'game'
             random.shuffle(st.session_state.card_list)
             st.session_state.current_index = 0
             st.session_state.show_answer = False
             st.rerun()
 
+    st.write("---") # 区切り線
 
+    # === 乗り物エリア（新規追加！） ===
+    st.markdown("### 🚀 乗り物")
+    v_col1, v_col2 = st.columns(2)
+    
+    with v_col1:
+        if st.button("乗り物 1"):
+            # data.py の course_vehicles1 を呼び出す
+            st.session_state.card_list = data.course_vehicles1.copy() 
+            st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
+            
+    with v_col2:
+        if st.button("乗り物 2"):
+             # data.py の course_vehicles2 を呼び出す
+            st.session_state.card_list = data.course_vehicles2.copy() 
+            st.session_state.mode = 'game'
+            random.shuffle(st.session_state.card_list)
+            st.session_state.current_index = 0
+            st.session_state.show_answer = False
+            st.rerun()
 # ■ ゲーム画面
 elif st.session_state.mode == 'game':
     with st.sidebar:
